@@ -1,8 +1,87 @@
 import { motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { Workflow, Database, Mail, Bot, Cloud, GitBranch, Zap, Server, ChevronLeft, ChevronRight } from 'lucide-react';
-import n8nLogo from '@/assets/n8n-logo.png';
 
+// n8n style background component
+function N8nBackground() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Blue gradient background */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          background: 'radial-gradient(ellipse at center, hsl(210 100% 25%) 0%, hsl(220 60% 8%) 70%, hsl(222 47% 5%) 100%)'
+        }}
+      />
+      
+      {/* SVG workflow diagram elements */}
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="n8nGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="hsl(200 100% 50%)" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="hsl(210 100% 40%)" stopOpacity="0.1" />
+          </linearGradient>
+        </defs>
+        
+        {/* Left circle */}
+        <circle cx="80" cy="200" r="30" fill="none" stroke="hsl(200 80% 50%)" strokeWidth="1.5" opacity="0.3" />
+        
+        {/* Top workflow nodes */}
+        <g opacity="0.25">
+          <rect x="280" y="80" width="20" height="20" rx="3" fill="none" stroke="hsl(200 80% 60%)" strokeWidth="1.5" transform="rotate(45 290 90)" />
+          <line x1="310" y1="90" x2="350" y2="90" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+          <rect x="350" y="75" width="50" height="30" rx="4" fill="none" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+          <line x1="400" y1="90" x2="440" y2="90" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+          <rect x="440" y="75" width="50" height="30" rx="4" fill="none" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+          <line x1="490" y1="90" x2="530" y2="90" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+          <circle cx="550" cy="90" r="15" fill="none" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+          <circle cx="590" cy="90" r="12" fill="none" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+        </g>
+        
+        {/* Middle left connector */}
+        <g opacity="0.2">
+          <circle cx="160" cy="180" r="8" fill="none" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+          <line x1="168" y1="180" x2="200" y2="180" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+          <rect x="200" y="165" width="40" height="30" rx="4" fill="none" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+        </g>
+        
+        {/* Bottom workflow nodes */}
+        <g opacity="0.25">
+          <rect x="320" y="290" width="50" height="30" rx="4" fill="none" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+          <line x1="370" y1="305" x2="420" y2="305" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+          <polygon points="390,305 400,300 400,310" fill="hsl(200 80% 60%)" />
+          <rect x="420" y="290" width="60" height="30" rx="4" fill="none" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+          <line x1="480" y1="305" x2="520" y2="305" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+          <polygon points="500,305 510,300 510,310" fill="hsl(200 80% 60%)" />
+          <circle cx="540" cy="305" r="15" fill="none" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+        </g>
+        
+        {/* Right side elements */}
+        <g opacity="0.2">
+          <circle cx="680" cy="220" r="12" fill="none" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+          <line x1="692" y1="220" x2="720" y2="220" stroke="hsl(200 80% 60%)" strokeWidth="1.5" />
+        </g>
+      </svg>
+      
+      {/* n8n Logo - centered */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <svg width="280" height="80" viewBox="0 0 280 80" className="opacity-90">
+          {/* n8n connector symbol */}
+          <g fill="none" stroke="white" strokeWidth="3">
+            <circle cx="40" cy="40" r="8" />
+            <circle cx="70" cy="40" r="8" />
+            <line x1="48" y1="40" x2="62" y2="40" />
+            <circle cx="100" cy="40" r="12" />
+            <path d="M 88 40 Q 94 25 100 25 Q 106 25 112 40" />
+            <circle cx="100" cy="55" r="5" />
+          </g>
+          {/* n8n text */}
+          <text x="130" y="52" fill="white" fontSize="42" fontFamily="Space Grotesk, sans-serif" fontWeight="600">n8n</text>
+        </svg>
+      </div>
+    </div>
+  );
+}
 const workflows = [
   {
     title: 'CI/CD Pipeline',
@@ -138,19 +217,25 @@ export default function WorkflowsSection() {
 
   return (
     <section id="workflows" className="py-32 relative overflow-hidden">
-      {/* n8n Logo Background */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-        <img 
-          src={n8nLogo} 
-          alt="" 
-          className="w-[500px] h-[500px] object-contain opacity-[0.06] dark:opacity-[0.08] blur-sm"
-        />
-      </div>
+      {/* Professional n8n Background */}
+      <N8nBackground />
       
-      {/* Background glow */}
-      <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20 blur-3xl pointer-events-none"
-        style={{ background: 'radial-gradient(circle, hsl(var(--secondary) / 0.4) 0%, transparent 70%)' }}
-      />
+      <div className="container mx-auto px-6 mb-12 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="max-w-2xl"
+        >
+          <h2 className="font-display text-4xl md:text-5xl font-bold mb-4 text-white">
+            n8n <span className="text-primary">Workflows</span>
+          </h2>
+          <p className="text-white/70">
+            Automated pipelines and integrations I've built to streamline operations
+          </p>
+        </motion.div>
+      </div>
       
       <div className="container mx-auto px-6 mb-12 relative z-10">
         <motion.div
