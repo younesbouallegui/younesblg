@@ -76,16 +76,21 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-4">
             <motion.button
               onClick={toggleTheme}
-              whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
-              className="p-2 rounded-lg glass-card border border-glass-border hover:border-primary/50 transition-colors"
+              className="relative w-14 h-7 rounded-full bg-muted border border-border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary/50"
               aria-label="Toggle theme"
             >
-              {isDark ? (
-                <Sun className="w-5 h-5 text-primary" />
-              ) : (
-                <Moon className="w-5 h-5 text-primary" />
-              )}
+              <motion.div
+                className="absolute top-0.5 w-6 h-6 rounded-full bg-background shadow-md flex items-center justify-center border border-border"
+                animate={{ left: isDark ? '1.75rem' : '0.125rem' }}
+                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+              >
+                {isDark ? (
+                  <Moon className="w-3.5 h-3.5 text-primary" />
+                ) : (
+                  <Sun className="w-3.5 h-3.5 text-primary" />
+                )}
+              </motion.div>
             </motion.button>
             <Button variant="hero" size="sm">
               Let's Talk
@@ -123,14 +128,19 @@ export default function Navbar() {
               <div className="flex items-center gap-4 mt-2">
                 <button
                   onClick={toggleTheme}
-                  className="p-2 rounded-lg glass-card border border-glass-border"
+                  className="relative w-14 h-7 rounded-full bg-muted border border-border transition-colors duration-300"
                   aria-label="Toggle theme"
                 >
-                  {isDark ? (
-                    <Sun className="w-5 h-5 text-primary" />
-                  ) : (
-                    <Moon className="w-5 h-5 text-primary" />
-                  )}
+                  <div
+                    className="absolute top-0.5 w-6 h-6 rounded-full bg-background shadow-md flex items-center justify-center border border-border transition-all duration-300"
+                    style={{ left: isDark ? '1.75rem' : '0.125rem' }}
+                  >
+                    {isDark ? (
+                      <Moon className="w-3.5 h-3.5 text-primary" />
+                    ) : (
+                      <Sun className="w-3.5 h-3.5 text-primary" />
+                    )}
+                  </div>
                 </button>
                 <Button variant="hero" size="sm" className="flex-1">
                   Let's Talk

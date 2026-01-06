@@ -1,6 +1,6 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
-import { Workflow, Database, Mail, Bot, Cloud, GitBranch, Zap, Server } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
+import { Workflow, Database, Mail, Bot, Cloud, GitBranch, Zap, Server, ChevronLeft, ChevronRight } from 'lucide-react';
 import n8nLogo from '@/assets/n8n-logo.png';
 
 const workflows = [
@@ -107,16 +107,37 @@ function WorkflowCard({ workflow, index }: { workflow: typeof workflows[0]; inde
 }
 
 export default function WorkflowsSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-  
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isHovering, setIsHovering] = useState(false);
+
+  const checkScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, []);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 340;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
-    <section id="workflows" className="py-32 relative overflow-hidden" ref={containerRef}>
+    <section id="workflows" className="py-32 relative overflow-hidden">
       {/* n8n Logo Background */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
         <img 
@@ -148,15 +169,54 @@ export default function WorkflowsSection() {
         </motion.div>
       </div>
 
-      {/* Horizontal scroll container */}
-      <motion.div 
-        style={{ x }}
-        className="flex gap-6 px-6"
+      {/* Horizontal scroll container with arrows */}
+      <div 
+        className="relative"
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
       >
-        {workflows.map((workflow, index) => (
-          <WorkflowCard key={workflow.title} workflow={workflow} index={index} />
-        ))}
-      </motion.div>
+        {/* Left Arrow */}
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isHovering && canScrollLeft ? 1 : 0 }}
+          transition={{ duration: 0.2 }}
+          onClick={() => scroll('left')}
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground transition-colors disabled:opacity-0"
+          disabled={!canScrollLeft}
+          aria-label="Scroll left"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </motion.button>
+
+        {/* Right Arrow */}
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isHovering && canScrollRight ? 1 : 0 }}
+          transition={{ duration: 0.2 }}
+          onClick={() => scroll('right')}
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground transition-colors disabled:opacity-0"
+          disabled={!canScrollRight}
+          aria-label="Scroll right"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </motion.button>
+
+        {/* Gradient overlays */}
+        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+        {/* Scrollable content */}
+        <div 
+          ref={scrollContainerRef}
+          onScroll={checkScroll}
+          className="flex gap-6 px-6 overflow-x-auto scrollbar-hide pb-4"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {workflows.map((workflow, index) => (
+            <WorkflowCard key={workflow.title} workflow={workflow} index={index} />
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
