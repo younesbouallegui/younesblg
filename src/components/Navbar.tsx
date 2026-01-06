@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const navItems = [
@@ -15,6 +15,24 @@ const navItems = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDark, setIsDark] = useState(true);
+
+  useEffect(() => {
+    // Check for saved theme preference or default to dark
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const shouldBeDark = savedTheme === 'dark' || (!savedTheme && prefersDark) || (!savedTheme && !prefersDark);
+    
+    setIsDark(shouldBeDark);
+    document.documentElement.classList.toggle('dark', shouldBeDark);
+  }, []);
+
+  const toggleTheme = () => {
+    const newIsDark = !isDark;
+    setIsDark(newIsDark);
+    document.documentElement.classList.toggle('dark', newIsDark);
+    localStorage.setItem('theme', newIsDark ? 'dark' : 'light');
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,8 +72,21 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* Theme Toggle & CTA Button */}
+          <div className="hidden md:flex items-center gap-4">
+            <motion.button
+              onClick={toggleTheme}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="p-2 rounded-lg glass-card border border-glass-border hover:border-primary/50 transition-colors"
+              aria-label="Toggle theme"
+            >
+              {isDark ? (
+                <Sun className="w-5 h-5 text-primary" />
+              ) : (
+                <Moon className="w-5 h-5 text-primary" />
+              )}
+            </motion.button>
             <Button variant="hero" size="sm">
               Let's Talk
             </Button>
@@ -89,9 +120,22 @@ export default function Navbar() {
                   {item.label}
                 </a>
               ))}
-              <Button variant="hero" size="sm" className="w-full mt-2">
-                Let's Talk
-              </Button>
+              <div className="flex items-center gap-4 mt-2">
+                <button
+                  onClick={toggleTheme}
+                  className="p-2 rounded-lg glass-card border border-glass-border"
+                  aria-label="Toggle theme"
+                >
+                  {isDark ? (
+                    <Sun className="w-5 h-5 text-primary" />
+                  ) : (
+                    <Moon className="w-5 h-5 text-primary" />
+                  )}
+                </button>
+                <Button variant="hero" size="sm" className="flex-1">
+                  Let's Talk
+                </Button>
+              </div>
             </div>
           </motion.div>
         )}

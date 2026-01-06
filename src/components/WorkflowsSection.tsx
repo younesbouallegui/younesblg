@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Workflow, Database, Mail, Bot, Cloud, GitBranch, Zap, Server } from 'lucide-react';
+import n8nLogo from '@/assets/n8n-logo.png';
 
 const workflows = [
   {
@@ -116,12 +117,21 @@ export default function WorkflowsSection() {
 
   return (
     <section id="workflows" className="py-32 relative overflow-hidden" ref={containerRef}>
+      {/* n8n Logo Background */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+        <img 
+          src={n8nLogo} 
+          alt="" 
+          className="w-[500px] h-[500px] object-contain opacity-[0.06] dark:opacity-[0.08] blur-sm"
+        />
+      </div>
+      
       {/* Background glow */}
       <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20 blur-3xl pointer-events-none"
         style={{ background: 'radial-gradient(circle, hsl(var(--secondary) / 0.4) 0%, transparent 70%)' }}
       />
       
-      <div className="container mx-auto px-6 mb-12">
+      <div className="container mx-auto px-6 mb-12 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
