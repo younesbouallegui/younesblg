@@ -146,7 +146,7 @@
 @layer components {
   /* Glassmorphism Card */
   .glass-card {
-    @apply bg-glass/50 backdrop-blur-xl border border-glass-border rounded-xl;
+    @apply bg-glass/30 backdrop-blur-md border border-glass-border/50 rounded-xl;
     box-shadow: var(--shadow-card);
   }
 
@@ -155,7 +155,7 @@
   }
 
   .glass-card-hover:hover {
-    @apply border-primary/50;
+    @apply border-primary/50 bg-glass/40;
     box-shadow: var(--shadow-glow);
   }
 
