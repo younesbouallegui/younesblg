@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { Workflow, Database, Mail, Bot, Cloud, GitBranch, Zap, Server, ChevronLeft, ChevronRight } from 'lucide-react';
-import n8nLogo from '@/assets/n8n-logo.png';
+import n8nBackground from '@/assets/n8n-background.png';
 
 const workflows = [
   {
@@ -138,19 +138,33 @@ export default function WorkflowsSection() {
 
   return (
     <section id="workflows" className="py-32 relative overflow-hidden">
-      {/* n8n Logo Background */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-        <img 
-          src={n8nLogo} 
-          alt="" 
-          className="w-[500px] h-[500px] object-contain opacity-[0.06] dark:opacity-[0.08] blur-sm"
+      {/* Professional n8n Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Subtle pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03]"
+          style={{
+            backgroundImage: `url(${n8nBackground})`,
+            backgroundSize: '120px',
+            backgroundRepeat: 'repeat',
+            backgroundPosition: 'center',
+          }}
         />
+        {/* Center logo accent */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <img 
+            src={n8nBackground} 
+            alt="" 
+            className="w-32 h-32 object-contain opacity-[0.08] dark:opacity-[0.12]"
+          />
+        </div>
+        {/* Gradient overlays for depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-background/50" />
       </div>
       
-      {/* Background glow */}
-      <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20 blur-3xl pointer-events-none"
-        style={{ background: 'radial-gradient(circle, hsl(var(--secondary) / 0.4) 0%, transparent 70%)' }}
-      />
+      {/* Accent glows */}
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full opacity-10 blur-3xl pointer-events-none bg-primary" />
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full opacity-10 blur-3xl pointer-events-none bg-secondary" />
       
       <div className="container mx-auto px-6 mb-12 relative z-10">
         <motion.div
