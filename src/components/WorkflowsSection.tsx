@@ -138,32 +138,18 @@ export default function WorkflowsSection() {
 
   return (
     <section id="workflows" className="py-32 relative overflow-hidden">
-      {/* Professional n8n Background */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Repeating pattern overlay - more visible */}
-        <div className="absolute inset-0 opacity-[0.08] dark:opacity-[0.15]"
-          style={{
-            backgroundImage: `url(${n8nBackground})`,
-            backgroundSize: '80px',
-            backgroundRepeat: 'repeat',
-            backgroundPosition: 'center',
-          }}
+      {/* Single large n8n logo background */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <img 
+          src={n8nBackground} 
+          alt="" 
+          className="w-[400px] h-[400px] md:w-[500px] md:h-[500px] object-contain opacity-15 dark:opacity-25"
         />
-        {/* Large center logo - more prominent */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <img 
-            src={n8nBackground} 
-            alt="" 
-            className="w-64 h-64 object-contain opacity-20 dark:opacity-30"
-          />
-        </div>
-        {/* Soft gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background/80" />
       </div>
       
       {/* Accent glows */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-20 blur-3xl pointer-events-none bg-primary" />
-      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full opacity-15 blur-3xl pointer-events-none bg-secondary" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-15 blur-3xl pointer-events-none bg-primary" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full opacity-10 blur-3xl pointer-events-none bg-secondary" />
       
       <div className="container mx-auto px-6 mb-12 relative z-10">
         <motion.div
