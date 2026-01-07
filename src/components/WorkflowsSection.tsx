@@ -143,7 +143,7 @@ export default function WorkflowsSection() {
         <img 
           src={n8nBackground} 
           alt="" 
-          className="w-[400px] h-[400px] md:w-[500px] md:h-[500px] object-contain opacity-15 dark:opacity-25"
+          className="w-[600px] h-[600px] md:w-[800px] md:h-[800px] object-contain opacity-20 dark:opacity-35"
         />
       </div>
       
