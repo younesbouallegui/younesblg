@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Zap, Server, GitMerge, Cloud } from 'lucide-react';
+import profileLight from '@/assets/profile-light.png';
+import profileDark from '@/assets/profile-dark.png';
 
 const features = [
   {
@@ -44,6 +46,36 @@ export default function AboutSection() {
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto text-center mb-20"
         >
+          {/* Profile Picture */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="relative w-40 h-40 md:w-48 md:h-48 mx-auto mb-8"
+          >
+            {/* Glow ring */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/40 to-accent/40 blur-xl opacity-60" />
+            
+            {/* Border ring */}
+            <div className="absolute inset-0 rounded-full p-1 bg-gradient-to-br from-primary via-accent to-primary">
+              <div className="w-full h-full rounded-full bg-background" />
+            </div>
+            
+            {/* Profile image - Light mode */}
+            <img
+              src={profileLight}
+              alt="Profile"
+              className="absolute inset-1 w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover object-top dark:hidden"
+            />
+            
+            {/* Profile image - Dark mode */}
+            <img
+              src={profileDark}
+              alt="Profile"
+              className="absolute inset-1 w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover object-top hidden dark:block"
+            />
+          </motion.div>
+
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">
             About <span className="gradient-text">Me</span>
           </h2>
