@@ -51,14 +51,14 @@ export default function HeroSection() {
             <img
               src={profileLight}
               alt="Profile"
-              className="absolute inset-1 w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover object-[center_0%] dark:hidden"
+              className="absolute inset-1 w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover object-top dark:hidden"
             />
             
             {/* Profile image - Dark mode */}
             <img
               src={profileDark}
               alt="Profile"
-              className="absolute inset-1 w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover object-[center_0%] hidden dark:block"
+              className="absolute inset-1 w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover object-top hidden dark:block"
             />
           </motion.div>
 
