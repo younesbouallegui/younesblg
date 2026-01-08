@@ -37,7 +37,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.1, duration: 0.6 }}
-            className="relative w-32 h-32 md:w-40 md:h-40 mx-auto"
+            className="relative w-44 h-44 md:w-56 md:h-56 mx-auto"
           >
             {/* Glow ring */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/40 to-accent/40 blur-xl opacity-60" />
@@ -51,14 +51,14 @@ export default function HeroSection() {
             <img
               src={profileLight}
               alt="Profile"
-              className="absolute inset-1 w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover object-[center_5%] dark:hidden"
+              className="absolute inset-1 w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover object-[center_0%] dark:hidden"
             />
             
             {/* Profile image - Dark mode */}
             <img
               src={profileDark}
               alt="Profile"
-              className="absolute inset-1 w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover object-[center_5%] hidden dark:block"
+              className="absolute inset-1 w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover object-[center_0%] hidden dark:block"
             />
           </motion.div>
 
