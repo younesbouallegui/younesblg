@@ -1,51 +1,33 @@
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const languages = [
   {
     name: "العربية",
     englishName: "Arabic",
-    level: "Native",
+    level: "native",
     flag: "🇸🇦",
     proficiency: 100,
   },
   {
     name: "Français",
     englishName: "French",
-    level: "Native",
+    level: "native",
     flag: "🇫🇷",
     proficiency: 100,
   },
   {
     name: "English",
     englishName: "English",
-    level: "Fluent",
+    level: "fluent",
     flag: "🇬🇧",
     proficiency: 90,
-  },
-  {
-    name: "Español",
-    englishName: "Spanish",
-    level: "Basic",
-    flag: "🇪🇸",
-    proficiency: 30,
-  },
-  {
-    name: "Deutsch",
-    englishName: "German",
-    level: "Basic",
-    flag: "🇩🇪",
-    proficiency: 25,
-  },
-  {
-    name: "Italiano",
-    englishName: "Italian",
-    level: "Basic",
-    flag: "🇮🇹",
-    proficiency: 20,
   },
 ];
 
 export default function LanguagesSection() {
+  const { t } = useLanguage();
+
   return (
     <section id="languages" className="py-24 relative">
       <div className="container mx-auto px-6">
@@ -58,15 +40,15 @@ export default function LanguagesSection() {
           className="text-center mb-16"
         >
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-            <span className="gradient-text">Languages</span>
+            <span className="gradient-text">{t('languages.title')}</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Multilingual communication skills for global collaboration
+            {t('languages.subtitle')}
           </p>
         </motion.div>
 
         {/* Languages Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
           {languages.map((lang, index) => (
             <motion.div
               key={lang.englishName}
@@ -75,30 +57,28 @@ export default function LanguagesSection() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.4 }}
               whileHover={{ scale: 1.05, y: -5 }}
-              className="glass-card p-6 text-center group hover:border-primary/50 transition-all duration-300"
+              className="glass-card p-8 text-center group hover:border-primary/50 transition-all duration-300"
             >
               {/* Flag */}
-              <div className="text-5xl mb-3 group-hover:scale-110 transition-transform">
+              <div className="text-6xl mb-4 group-hover:scale-110 transition-transform">
                 {lang.flag}
               </div>
               
               {/* Language Name */}
-              <h3 className="font-display text-lg font-semibold mb-1">{lang.name}</h3>
-              <p className="text-sm text-muted-foreground mb-3">{lang.englishName}</p>
+              <h3 className="font-display text-xl font-semibold mb-1">{lang.name}</h3>
+              <p className="text-sm text-muted-foreground mb-4">{lang.englishName}</p>
               
               {/* Level Badge */}
-              <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
-                lang.level === 'Native' 
+              <span className={`inline-block px-4 py-1.5 rounded-full text-sm font-medium ${
+                lang.level === 'native' 
                   ? 'bg-primary/20 text-primary' 
-                  : lang.level === 'Fluent'
-                  ? 'bg-accent/20 text-accent'
-                  : 'bg-muted text-muted-foreground'
+                  : 'bg-accent/20 text-accent'
               }`}>
-                {lang.level}
+                {t(`languages.${lang.level}`)}
               </span>
               
               {/* Proficiency Bar */}
-              <div className="mt-4 h-1.5 bg-muted rounded-full overflow-hidden">
+              <div className="mt-6 h-2 bg-muted rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   whileInView={{ width: `${lang.proficiency}%` }}
