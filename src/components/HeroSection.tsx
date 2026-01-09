@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Terminal, GitBranch } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { lazy, Suspense } from 'react';
-import profileLight from '@/assets/profile-light.png';
-import profileDark from '@/assets/profile-dark.png';
+import profileLight from '@/assets/profile-light.jpg';
+import profileDark from '@/assets/profile-dark.jpg';
 
 const Scene3D = lazy(() => import('./Scene3D'));
 
