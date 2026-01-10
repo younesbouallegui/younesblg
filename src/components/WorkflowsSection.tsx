@@ -1,42 +1,48 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
-import { Workflow, Database, Mail, Bot, Cloud, GitBranch, Zap, Server, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Workflow, Database, Mail, Bot, Cloud, GitBranch, Zap, Server, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import n8nBackground from '@/assets/n8n-background.png';
+import WorkflowCanvas from './n8n/WorkflowCanvas';
+import { N8nWorkflow } from './n8n/types';
 
 const workflows = [
   {
-    title: 'CI/CD Pipeline',
-    description: 'Automated build, test, and deployment workflow for microservices',
-    nodes: [GitBranch, Server, Cloud],
-    color: 'primary'
+    title: 'From Figma to Real App',
+    description: 'AI-powered workflow that transforms Figma designs into fullstack applications',
+    nodes: [Cloud, Bot, Server],
+    color: 'primary',
+    filename: 'from_figma_to_real_app.json'
   },
   {
-    title: 'Data Sync',
-    description: 'Real-time data synchronization between multiple services',
-    nodes: [Database, Zap, Database],
-    color: 'secondary'
+    title: 'GitLab CI/CD Pipeline',
+    description: 'Comprehensive CI/CD automation with SonarQube and Slack notifications',
+    nodes: [GitBranch, Server, Mail],
+    color: 'secondary',
+    filename: 'gitlab_cicd_pipeline.json'
   },
   {
-    title: 'Alert System',
-    description: 'Intelligent monitoring with automated incident response',
-    nodes: [Server, Bot, Mail],
-    color: 'primary'
+    title: 'Cloudflare DNS AI',
+    description: 'AI-powered chat assistant for managing Cloudflare DNS records',
+    nodes: [Bot, Cloud, Database],
+    color: 'primary',
+    filename: 'cloudflare_dns_ai.json'
   },
   {
-    title: 'Auto Scaling',
-    description: 'Dynamic resource allocation based on traffic patterns',
-    nodes: [Cloud, Workflow, Server],
-    color: 'secondary'
-  },
-  {
-    title: 'Backup Automation',
-    description: 'Scheduled backups with verification and rotation',
-    nodes: [Database, Zap, Cloud],
-    color: 'primary'
+    title: 'DevOps Infrastructure',
+    description: 'Automated provisioning of Docker, K3s, Jenkins & Grafana stack',
+    nodes: [Server, Workflow, Cloud],
+    color: 'secondary',
+    filename: 'devops_infrastructure.json'
   },
 ];
 
-function WorkflowCard({ workflow, index }: { workflow: typeof workflows[0]; index: number }) {
+interface WorkflowCardProps {
+  workflow: typeof workflows[0];
+  index: number;
+  onClick: () => void;
+}
+
+function WorkflowCard({ workflow, index, onClick }: WorkflowCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, x: 50 }}
@@ -44,6 +50,7 @@ function WorkflowCard({ workflow, index }: { workflow: typeof workflows[0]; inde
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
       whileHover={{ scale: 1.03, y: -5 }}
+      onClick={onClick}
       className="flex-shrink-0 w-80 glass-card-hover p-6 cursor-pointer group"
     >
       {/* Pipeline visualization */}
@@ -102,6 +109,12 @@ function WorkflowCard({ workflow, index }: { workflow: typeof workflows[0]; inde
         {workflow.title}
       </h3>
       <p className="text-sm text-muted-foreground">{workflow.description}</p>
+      
+      {/* View workflow hint */}
+      <div className="mt-4 text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+        <span>Click to explore workflow</span>
+        <ChevronRight className="w-3 h-3" />
+      </div>
     </motion.div>
   );
 }
@@ -111,6 +124,8 @@ export default function WorkflowsSection() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [isHovering, setIsHovering] = useState(false);
+  const [selectedWorkflow, setSelectedWorkflow] = useState<N8nWorkflow | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const checkScroll = () => {
     if (scrollContainerRef.current) {
@@ -133,6 +148,19 @@ export default function WorkflowsSection() {
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth'
       });
+    }
+  };
+
+  const handleWorkflowClick = async (filename: string) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/workflows/${filename}`);
+      const data = await response.json();
+      setSelectedWorkflow(data);
+    } catch (error) {
+      console.error('Failed to load workflow:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -212,10 +240,42 @@ export default function WorkflowsSection() {
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {workflows.map((workflow, index) => (
-            <WorkflowCard key={workflow.title} workflow={workflow} index={index} />
+            <WorkflowCard 
+              key={workflow.title} 
+              workflow={workflow} 
+              index={index}
+              onClick={() => handleWorkflowClick(workflow.filename)}
+            />
           ))}
         </div>
       </div>
+
+      {/* Loading Overlay */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center"
+          >
+            <div className="flex flex-col items-center gap-4">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              <p className="text-muted-foreground">Loading workflow...</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Workflow Viewer Modal */}
+      <AnimatePresence>
+        {selectedWorkflow && (
+          <WorkflowCanvas
+            workflow={selectedWorkflow}
+            onClose={() => setSelectedWorkflow(null)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
