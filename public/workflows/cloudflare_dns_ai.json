@@ -1,0 +1,510 @@
+{
+  "name": "Manage Cloudflare DNS Records with AI-powered Chat Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.cloudflare.com/client/v4/zones/{{ $json.out.domain_id }}/dns_records/{{ $json.out.record_id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $json.out.new_record_content }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "871639d7-df7c-47fc-938c-64d0a416c5ef",
+      "name": "Setter",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        900,
+        1140
+      ],
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "url": "=https://api.cloudflare.com/client/v4/zones/{{ $json.out.domain_id }}/dns_records",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "f7211f86-da80-4ffe-874d-4e906ced822a",
+      "name": "Getter",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        900,
+        980
+      ],
+      "executeOnce": true,
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "result",
+        "options": {}
+      },
+      "id": "954d18bc-56c5-4159-9da9-0afec8fcff71",
+      "name": "Host details",
+      "type": "n8n-nodes-base.splitOut",
+      "position": [
+        1060,
+        820
+      ],
+      "executeOnce": false,
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "0269a1af-f7db-4391-8424-c0d41c658f4f",
+      "name": "SubCall",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        420,
+        900
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "3c0d746c-77df-463b-98e9-921801031988",
+      "name": "End",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        1000,
+        340
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "description": "=Call this tool to make cloudflare oprations. \nPass down only json with needed data",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $workflow.id }}",
+          "cachedResultName": "={{ $workflow.id }}"
+        },
+        "workflowInputs": {
+          "value": {},
+          "schema": [],
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "id": "1bb8f91b-cf2b-43c8-a2a1-740e63a4b881",
+      "name": "CloudFlare tool",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "position": [
+        900,
+        580
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "tableName": "langchain_chat_histories",
+        "contextWindowLength": 6
+      },
+      "id": "7097a143-a773-431e-9281-4fe056e161cf",
+      "name": "Postgres Chat Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "position": [
+        680,
+        580
+      ],
+      "typeVersion": 1.3
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "a542a8cc-a11b-41c7-a288-fc0948d002d3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.out.action }}",
+                    "rightValue": "domain"
+                  }
+                ]
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "6b5fa3fd-e4c2-4e01-bffd-f2ea364dc6a5",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.out.action }}",
+                    "rightValue": "get_dns"
+                  }
+                ]
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "f3715811-47d8-4cee-b705-ea1ed4ddd0a3",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.out.action }}",
+                    "rightValue": "set_dns"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a037dd6c-e52d-4ada-987a-bf774f7a4c5f",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        660,
+        1000
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "content": "## Cloudflare ops\n\n- this is main operation call for getting, setting DNS records",
+        "height": 544,
+        "width": 840,
+        "color": 6
+      },
+      "id": "7dc470f8-e959-4080-b690-898793caed24",
+      "name": "Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        360,
+        780
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet inpt = $input.first().json.query;\nlet out = {};\ntry{\n  out = JSON.parse(inpt)\n} catch{}\nif( out.action ){\n  return {out};\n} else{\n  return {};\n}\n"
+      },
+      "id": "0955c754-5e03-4604-b573-7f8289f7d9be",
+      "name": "Json",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        440,
+        1140
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "url": "https://api.cloudflare.com/client/v4/zones",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "per_page",
+              "value": "=100"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cb94cd13-3e71-4f72-aa5d-4aebc39b2fab",
+      "name": "Get TLDs",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        900,
+        820
+      ],
+      "executeOnce": true,
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are dns manager for CloudFlare\n\nYou have cf_tool that is your source for getting and setting DNS records.\nOnly return answers based from cf_tool.\n\nWhen calling cf_tool, data args to pass for actions are:\n\nIf you need to get dns record, call cf_tool and pass:\n- action: 'get_dns'\n- domain_id: domain id\n\nif you need to set dns record, call cf_tool and pass:\n- action: 'set_dns'\n- domain_id: domain id\n- record_id: id of a record\n- record_type: type of DNS record\n- new_record_content: new value\n\nIf you need to get domains available in CF, call cf_tool and pass:\n- action 'domain'\n\nBefore calling any user query action, first execute get all domains action."
+        }
+      },
+      "id": "9b15c589-3ec2-4370-99a2-4fb06ae28ebc",
+      "name": "Chat Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        660,
+        340
+      ],
+      "typeVersion": 1.9
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "id": "92a83f1b-f383-4b40-bc13-053cb1ef6ed8",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        520,
+        560
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "b6e1b90a-4d4f-404b-aa88-01cabc31f9f5",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "position": [
+        440,
+        340
+      ],
+      "webhookId": "cb890e80-624b-4431-ab35-992849d95cd1",
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "content": "## Chat step\n\n1. Use what ever LLM model you like - I've tested it with Gemini and GPT 4o-mini - and both work flawlessly.\n\n2. Prepared main get|set TLD DNS records ops with easy prompt, also extend it to other settings or other ops for your CloudFlare if you need",
+        "height": 640,
+        "width": 840,
+        "color": 3
+      },
+      "id": "fbe032cf-544a-46f5-9d6b-385a65c8395f",
+      "name": "Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        360,
+        100
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "# CloudFlare chat ↪️️ get / set DNS records",
+        "height": 80,
+        "width": 700,
+        "color": 4
+      },
+      "id": "b9ec7f6c-ddfe-4dbb-b773-f5df1683076b",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        60,
+        -20
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 140,
+        "width": 1480,
+        "color": 4
+      },
+      "id": "b6f359c8-6d43-4961-8bf8-221ed8c54257",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -280,
+        -60
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "# Requirements\n\nFor storing and processing of data in this flow you will need:\n\n- CloudFlare.com API key/token - for retrieving your data (https://dash.cloudflare.com/?to=/:account/api-tokens)\n- OpenAPI credentials (or any other LLM provider) saved - for agent chat\n\n\n",
+        "height": 240,
+        "width": 620,
+        "color": 7
+      },
+      "id": "6cea4093-2110-4451-b8a8-6e4184ecc252",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -280,
+        100
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "SubCall": {
+      "main": [
+        [
+          {
+            "node": "Json",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get TLDs",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Getter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Setter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Json": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get TLDs": {
+      "main": [
+        [
+          {
+            "node": "Host details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Chat Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CloudFlare tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Chat Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Agent": {
+      "main": [
+        [
+          {
+            "node": "End",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Chat Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Chat Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3fd50542-a98e-436f-ba74-5ce350a5f5ad",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "74e7f60e06c791065bb244a82dab123077e66e4f9d9d304504ae0a895cee5794"
+  },
+  "id": "URdakKeomjjGLkti",
+  "tags": []
+}
