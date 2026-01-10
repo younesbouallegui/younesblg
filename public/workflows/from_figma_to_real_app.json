@@ -1,0 +1,188 @@
+{
+  "name": "My workflow 6",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "figma-ai-project",
+        "options": {}
+      },
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        300,
+        -200
+      ],
+      "id": "70ffec23-e799-4449-b0fd-8c0eb70dc47b",
+      "webhookId": "77ceb660-4bff-4c77-9191-c4f453441504"
+    },
+    {
+      "parameters": {
+        "url": "https://api.figma.com/v1/files/{{$json[\"fileKey\"]}}",
+        "options": {},
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "X-Figma-Token",
+              "value": "={{$env.FIGMA_TOKEN}}"
+            }
+          ]
+        }
+      },
+      "name": "Get Figma File",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        520,
+        -200
+      ],
+      "id": "35ca8de8-a5ab-4bc5-b77a-9f7e5e1205c2"
+    },
+    {
+      "parameters": {
+        "functionCode": "const doc = $json.document;\n\nfunction scan(node, result = { components: [], colors: [] }) {\n  if (node.type === 'COMPONENT') result.components.push(node.name);\n  if (node.fills && node.fills[0]?.color) result.colors.push(node.fills[0].color);\n  if (node.children) node.children.forEach(c => scan(c, result));\n  return result;\n}\n\nconst parsed = scan(doc);\nreturn [{ json: parsed }];"
+      },
+      "name": "Parse Design",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        740,
+        -200
+      ],
+      "id": "b10b53dd-f3f3-41e1-a7d0-111bebb8ac8a"
+    },
+    {
+      "parameters": {
+        "functionCode": "const { components } = $json;\n\nconst prompt = `You are an AI DevOps agent.\n\nCreate a fullstack project based on this UI:\nComponents: ${components.join(', ')}\n\nRequirements:\n- Frontend: Angular\n- Backend: FastAPI\n- Use Docker\n\nReturn ONLY valid JSON with:\n- project_structure\n- commands (array)\n- run_commands (array)`;\n\nreturn [{ json: { prompt } }];"
+      },
+      "name": "Build Prompt",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        960,
+        -200
+      ],
+      "id": "2b696cbb-e505-446c-8232-98474fac98ed"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {},
+        "requestOptions": {}
+      },
+      "name": "AI Planner",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        -200
+      ],
+      "id": "360176f8-f735-4e47-9ac2-eac6246a2f5c"
+    },
+    {
+      "parameters": {
+        "functionCode": "const output = JSON.parse($json.choices[0].message.content);\nreturn [{ json: output }];"
+      },
+      "name": "Extract Commands",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1400,
+        -200
+      ],
+      "id": "e0375a02-f001-441c-bd97-b866566761f8"
+    },
+    {
+      "parameters": {
+        "command": "={{$json.commands.join(' && ')}}"
+      },
+      "name": "Execute Commands",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        -200
+      ],
+      "id": "a8387f7a-d13d-4203-97a7-3f7a50dff467"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Figma File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Figma File": {
+      "main": [
+        [
+          {
+            "node": "Parse Design",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Design": {
+      "main": [
+        [
+          {
+            "node": "Build Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Prompt": {
+      "main": [
+        [
+          {
+            "node": "AI Planner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Planner": {
+      "main": [
+        [
+          {
+            "node": "Extract Commands",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Commands": {
+      "main": [
+        [
+          {
+            "node": "Execute Commands",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fab243d0-0379-4f7f-9251-199ecfe80bde",
+  "meta": {
+    "instanceId": "74e7f60e06c791065bb244a82dab123077e66e4f9d9d304504ae0a895cee5794"
+  },
+  "id": "BNJBLAct86MBYkqc",
+  "tags": []
+}

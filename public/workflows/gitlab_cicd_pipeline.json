@@ -1,0 +1,1139 @@
+{
+  "name": "GitLab CI/CD Pipeline Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "gitlab_pipeline",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1540,
+        -340
+      ],
+      "id": "ebbd8a67-c63a-4538-a2fa-c4accfee7e57",
+      "name": "Webhook",
+      "webhookId": "1a091771-385c-4d6e-a719-05864e4d02da"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "73a9d06b-0533-4029-95e2-1ffc2dffd855",
+              "leftValue": "={{ $json.status}}",
+              "rightValue": "success",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -760,
+        -340
+      ],
+      "id": "82d776ae-c545-4eec-aefd-b07655ee39ce",
+      "name": "If",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0948N681NY",
+          "mode": "list",
+          "cachedResultName": "new-channel"
+        },
+        "text": "=🚨 Sonar Failed 🚨\n\nLe pipeline a échoué à l'étape Sonar pour le projet {{ $json[\"project_id\"] }} sur pipeline {{ $json[\"pipeline_id\"] }}.\n\nLe pipeline est arrêté et nécessite une correction des erreurs Sonar avant de pouvoir continuer.\n\nMerci de vérifier rapidement.\n",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -140,
+        200
+      ],
+      "id": "e420bd3d-1f25-4b27-839a-71b89d23553a",
+      "name": "Slack",
+      "webhookId": "88db4457-2a37-43cb-a496-0456d9b1a1f7",
+      "retryOnFail": false,
+      "executeOnce": false,
+      "alwaysOutputData": true,
+      "credentials": {
+        "slackApi": {
+          "id": "2MosqMdqMzR31inF",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "younes.bouallegui@esprit.tn",
+        "subject": "🚨 Sonar Failed - Pipeline stoppé",
+        "emailType": "text",
+        "message": "=🚨 Sonar Failed 🚨\n\nLe pipeline a échoué à l'étape Sonar pour le projet {{ $json[\"project_id\"] }} sur pipeline {{ $json[\"pipeline_id\"] }}.\n\nLe pipeline est arrêté et nécessite une correction des erreurs Sonar avant de pouvoir continuer.\n\nMerci de vérifier rapidement.\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -140,
+        380
+      ],
+      "id": "1bb92077-21be-4c2d-85a7-3967d7ef5206",
+      "name": "Gmail",
+      "webhookId": "9fd42619-082e-49ca-af11-e66140597f3b",
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2OaVRLJuOJZtjjLr",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "younes.bouallegui@esprit.tn",
+        "subject": "✅ Sonar Passed - Confirmation requise",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Pipeline Approval Request</title>\n    <!--[if mso]>\n    <noscript>\n        <xml>\n            <o:OfficeDocumentSettings>\n                <o:PixelsPerInch>96</o:PixelsPerInch>\n            </o:OfficeDocumentSettings>\n        </xml>\n    </noscript>\n    <![endif]-->\n    <style>\n        /* Reset styles for email clients */\n        * {\n            margin: 0;\n            padding: 0;\n            box-sizing: border-box;\n        }\n        \n        body, table, td {\n            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif !important;\n            line-height: 1.6 !important;\n            color: #333 !important;\n        }\n        \n        body {\n            background-color: #f4f4f4 !important;\n            width: 100% !important;\n            margin: 0 !important;\n            padding: 0 !important;\n            -webkit-text-size-adjust: 100% !important;\n            -ms-text-size-adjust: 100% !important;\n        }\n        \n        /* Gmail-specific fixes */\n        .gmail-fix {\n            width: 100% !important;\n            max-width: 650px !important;\n            margin: 0 auto !important;\n        }\n        \n        .container-table {\n            width: 100% !important;\n            max-width: 650px !important;\n            margin: 20px auto !important;\n            background-color: #ffffff !important;\n            border-radius: 15px !important;\n            overflow: hidden !important;\n            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;\n        }\n        \n        .header-section {\n            width: 100% !important;\n            text-align: center !important;\n            padding: 35px 20px 25px 20px !important;\n            border-bottom: 3px solid #e0e0e0 !important;\n        }\n        \n        .logo-text {\n            font-size: 28px !important;\n            font-weight: bold !important;\n            color: #2c3e50 !important;\n            margin-bottom: 15px !important;\n            display: block !important;\n        }\n        \n        .title-text {\n            font-size: 22px !important;\n            color: #2c3e50 !important;\n            font-weight: 600 !important;\n            margin: 10px 0 !important;\n        }\n        \n        .status-badge {\n            display: inline-block !important;\n            background-color: #28a745 !important;\n            color: white !important;\n            padding: 8px 16px !important;\n            border-radius: 20px !important;\n            font-size: 14px !important;\n            font-weight: 600 !important;\n            margin-top: 10px !important;\n        }\n        \n        .content-section {\n            padding: 35px 20px !important;\n            font-size: 16px !important;\n            line-height: 1.8 !important;\n        }\n        \n        .project-info-box {\n            background-color: #f8f9fa !important;\n            padding: 20px !important;\n            border-left: 5px solid #007bff !important;\n            margin: 25px 0 !important;\n            border-radius: 8px !important;\n        }\n        \n        .project-info-item {\n            margin: 8px 0 !important;\n            font-weight: 500 !important;\n        }\n\n        .pipeline-ids-box {\n            background-color: #e8f4fd !important;\n            padding: 20px !important;\n            border-left: 5px solid #17a2b8 !important;\n            margin: 25px 0 !important;\n            border-radius: 8px !important;\n        }\n        \n        .actions-section {\n            background: #f8f9fa !important;\n            padding: 25px 20px !important;\n            margin: 30px 20px !important;\n            border-radius: 10px !important;\n            text-align: center !important;\n        }\n        \n        .actions-title {\n            font-size: 18px !important;\n            font-weight: 600 !important;\n            color: #495057 !important;\n            margin-bottom: 20px !important;\n        }\n        \n        .button-row {\n            width: 100% !important;\n            margin: 20px 0 !important;\n        }\n        \n        .button-cell {\n            text-align: center !important;\n            padding: 10px !important;\n        }\n        \n        .webhook-btn {\n            display: inline-block !important;\n            padding: 15px 25px !important;\n            text-decoration: none !important;\n            border-radius: 10px !important;\n            font-weight: 600 !important;\n            font-size: 15px !important;\n            min-width: 180px !important;\n            text-align: center !important;\n            border: none !important;\n            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif !important;\n            color: white !important;\n            cursor: pointer !important;\n            transition: all 0.3s ease !important;\n        }\n        \n        .confirm-btn {\n            background-color: #28a745 !important;\n            color: white !important;\n        }\n        \n        .confirm-btn:hover {\n            background-color: #218838 !important;\n            color: white !important;\n            text-decoration: none !important;\n        }\n        \n        .cancel-btn {\n            background-color: #dc3545 !important;\n            color: white !important;\n        }\n        \n        .cancel-btn:hover {\n            background-color: #c82333 !important;\n            color: white !important;\n            text-decoration: none !important;\n        }\n        \n        .schedule-section {\n            background-color: #e3f2fd !important;\n            padding: 25px 20px !important;\n            margin: 25px 20px !important;\n            border-radius: 12px !important;\n            border: 2px solid #e1bee7 !important;\n        }\n        \n        .schedule-title {\n            font-size: 18px !important;\n            font-weight: 600 !important;\n            color: #6f42c1 !important;\n            margin-bottom: 15px !important;\n            text-align: center !important;\n        }\n        \n        .quick-schedule {\n            background: white !important;\n            padding: 20px !important;\n            border-radius: 10px !important;\n            margin: 20px 0 !important;\n            border: 1px solid #dee2e6 !important;\n        }\n        \n        .quick-schedule-title {\n            font-size: 16px !important;\n            font-weight: 600 !important;\n            color: #495057 !important;\n            margin-bottom: 15px !important;\n            text-align: center !important;\n        }\n        \n        .quick-btn {\n            display: inline-block !important;\n            padding: 15px 25px !important;\n            margin: 5px !important;\n            background-color: #6f42c1 !important;\n            color: white !important;\n            text-decoration: none !important;\n            border-radius: 10px !important;\n            font-size: 15px !important;\n            font-weight: 600 !important;\n            border: none !important;\n            cursor: pointer !important;\n            transition: all 0.3s ease !important;\n            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif !important;\n            min-width: 180px !important;\n            text-align: center !important;\n        }\n        \n        .quick-btn:hover {\n            background-color: #5a2d91 !important;\n            color: white !important;\n            text-decoration: none !important;\n            transform: translateY(-2px) !important;\n        }\n        \n        .custom-schedule {\n            background: white !important;\n            padding: 20px !important;\n            border-radius: 10px !important;\n            margin: 20px 0 !important;\n            border: 1px solid #dee2e6 !important;\n        }\n        \n        .custom-schedule-title {\n            font-size: 16px !important;\n            font-weight: 600 !important;\n            color: #495057 !important;\n            margin-bottom: 15px !important;\n            text-align: center !important;\n        }\n        \n        .form-row {\n            margin-bottom: 15px !important;\n        }\n        \n        .form-label {\n            font-weight: 600 !important;\n            color: #495057 !important;\n            margin-bottom: 5px !important;\n            font-size: 14px !important;\n            display: block !important;\n        }\n        \n        .form-input {\n            width: 100% !important;\n            padding: 12px !important;\n            border: 2px solid #e9ecef !important;\n            border-radius: 8px !important;\n            font-size: 14px !important;\n            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif !important;\n            box-sizing: border-box !important;\n        }\n        \n        .form-input:focus {\n            border-color: #6f42c1 !important;\n            outline: none !important;\n        }\n        \n        .schedule-btn {\n            background-color: #6f42c1 !important;\n            color: white !important;\n            padding: 15px 25px !important;\n            border: none !important;\n            border-radius: 10px !important;\n            font-weight: 600 !important;\n            font-size: 15px !important;\n            cursor: pointer !important;\n            text-decoration: none !important;\n            display: inline-block !important;\n            margin-top: 10px !important;\n            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif !important;\n            transition: all 0.3s ease !important;\n            min-width: 200px !important;\n        }\n        \n        .schedule-btn:hover {\n            background-color: #5a2d91 !important;\n            color: white !important;\n            text-decoration: none !important;\n            transform: translateY(-2px) !important;\n        }\n        \n        .schedule-info {\n            background: #fff3cd !important;\n            border: 1px solid #ffeaa7 !important;\n            padding: 15px !important;\n            border-radius: 8px !important;\n            margin: 15px 0 !important;\n            font-size: 14px !important;\n            color: #856404 !important;\n            text-align: left !important;\n        }\n        \n        .footer-section {\n            padding: 25px 20px !important;\n            border-top: 2px solid #e0e0e0 !important;\n            font-size: 14px !important;\n            color: #6c757d !important;\n            text-align: center !important;\n        }\n        \n        .timestamp {\n            background: #f8f9fa !important;\n            padding: 10px !important;\n            border-radius: 5px !important;\n            font-family: 'Courier New', monospace !important;\n            font-size: 12px !important;\n            color: #6c757d !important;\n            margin-top: 15px !important;\n        }\n        \n        /* Mobile responsiveness */\n        @media only screen and (max-width: 600px) {\n            .container-table {\n                width: 95% !important;\n                margin: 10px auto !important;\n            }\n            \n            .header-section,\n            .content-section,\n            .actions-section,\n            .schedule-section,\n            .footer-section {\n                padding-left: 15px !important;\n                padding-right: 15px !important;\n            }\n            \n            .webhook-btn, .quick-btn {\n                width: 90% !important;\n                max-width: 280px !important;\n                margin: 5px 0 !important;\n            }\n            \n            .logo-text {\n                font-size: 24px !important;\n            }\n            \n            .title-text {\n                font-size: 18px !important;\n            }\n        }\n    </style>\n</head>\n<body>\n    <div class=\"gmail-fix\">\n        <table class=\"container-table\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n            <tr>\n                <td>\n                    <!-- Header Section -->\n                    <div class=\"header-section\">\n                        <div class=\"logo-text\">🚀 DevOps Pipeline Manager</div>\n                        <div class=\"title-text\">Deployment Approval Required</div>\n                        <div class=\"status-badge\">✅ SonarQube Analysis Complete</div>\n                    </div>\n                </td>\n            </tr>\n            \n            <tr>\n                <td>\n                    <!-- Content Section -->\n                    <div class=\"content-section\">\n                        <p><strong>Hello Grepsys,</strong></p>\n                        <p>The SonarQube analysis for your project has been completed successfully with no blocking issues detected.</p>\n                        \n                        <div class=\"project-info-box\">\n                            <div class=\"project-info-item\"><strong>Project:</strong> TEST DEVOPS</div>\n                            <div class=\"project-info-item\"><strong>Branch:</strong> main</div>\n                            <div class=\"project-info-item\"><strong>Analysis Status:</strong> ✅ Passed</div>\n                            <div class=\"project-info-item\"><strong>Quality Gate:</strong> ✅ Passed</div>\n                            <div class=\"project-info-item\"><strong>Action Required:</strong> Pipeline Approval</div>\n                            <div class=\"project-info-item\"><strong>Estimated Deploy Time:</strong> ~5 minutes</div>\n                        </div>\n\n                        <div class=\"pipeline-ids-box\">\n                            <div class=\"project-info-item\"><strong>🆔 Project ID:</strong> <span id=\"projectId\">{{$json.project_id}}</span></div>\n                            <div class=\"project-info-item\"><strong>🔧 Pipeline ID:</strong> <span id=\"pipelineIdMain\">{{$json.pipeline_id}}</span></div>\n                            <div class=\"project-info-item\"><strong>💼 Job ID:</strong> <span id=\"jobId\">{{$json.job_id}}</span></div>\n                        </div>\n                    </div>\n                </td>\n            </tr>\n            \n            <tr>\n                <td>\n                    <!-- Actions Section -->\n                    <div class=\"actions-section\">\n                        <div class=\"actions-title\">Choose Your Action</div>\n                        <p>Select how you'd like to proceed with the deployment pipeline:</p>\n                        \n                        <table class=\"button-row\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                            <tr>\n                                <td class=\"button-cell\">\n                                    <a href=\"https://sol-webmaster-living-distance.trycloudflare.com/webhook/merge-accept?project_id={{$json.project_id}}&pipeline_id={{$json.pipeline_id}}&job_id={{$json.job_id}}\" class=\"webhook-btn confirm-btn\">\n                                        ✅ Deploy Now\n                                    </a>\n                                </td>\n                                <td class=\"button-cell\">\n                                    <a href=\"https://sol-webmaster-living-distance.trycloudflare.com/webhook/merge-cancel?project_id={{$json.project_id}}&pipeline_id={{$json.pipeline_id}}&job_id={{$json.job_id}}\" class=\"webhook-btn cancel-btn\">\n                                        ❌ Cancel Pipeline\n                                    </a>\n                                </td>\n                            </tr>\n                        </table>\n                    </div>\n                </td>\n            </tr>\n            \n            <tr>\n                <td>\n                    <!-- Schedule Section -->\n                    <div class=\"schedule-section\">\n                        <div class=\"schedule-title\">📅 Schedule Pipeline Deployment</div>\n                        <p style=\"text-align: center; color: #6c757d; margin-bottom: 20px;\">\n                            Schedule your deployment using quick options or custom date & time\n                        </p>\n                        \n                        <!-- Quick Schedule Options -->\n                        <div class=\"quick-schedule\">\n                            <div class=\"quick-schedule-title\">⚡ Quick Schedule Options</div>\n                            <div style=\"text-align: center;\">\n                                <a href=\"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?description=This%20Morning%209:00%20AM&ref=main&cron=0%209%20*%20*%20*&cron_timezone=Africa/Tunis&active=true&project_id={{$json.project_id}}&pipeline_id={{$json.pipeline_id}}&job_id={{$json.job_id}}\" class=\"quick-btn\">This Morning 9:00 AM</a>\n                                <a href=\"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?description=This%20Afternoon%2012:00%20PM&ref=main&cron=0%2012%20*%20*%20*&cron_timezone=Africa/Tunis&active=true&project_id={{$json.project_id}}&pipeline_id={{$json.pipeline_id}}&job_id={{$json.job_id}}\" class=\"quick-btn\">This Afternoon 12:00 PM</a>\n                                <a href=\"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?description=Tomorrow%208:00%20AM&ref=main&cron=0%208%20*%20*%20*&cron_timezone=Africa/Tunis&active=true&project_id={{$json.project_id}}&pipeline_id={{$json.pipeline_id}}&job_id={{$json.job_id}}\" class=\"quick-btn\">Tomorrow 8:00 AM</a>\n                                <a href=\"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?description=Monday%20Morning%208:00%20AM&ref=main&cron=0%208%20*%20*%201&cron_timezone=Africa/Tunis&active=true&project_id={{$json.project_id}}&pipeline_id={{$json.pipeline_id}}&job_id={{$json.job_id}}\" class=\"quick-btn\">Monday Morning 8:00 AM</a>\n                            </div>\n                        </div>\n                        \n                        <!-- Custom Date & Time -->\n                        <div class=\"custom-schedule\">\n                            <div class=\"custom-schedule-title\">🛠️ Custom Date & Time</div>\n                            <div style=\"max-width: 400px; margin: 0 auto;\">\n                                <div class=\"form-row\">\n                                    <label class=\"form-label\">Deployment Date</label>\n                                    <input type=\"date\" class=\"form-input\" id=\"scheduleDate\" min=\"\" onchange=\"updateScheduleButton()\" />\n                                </div>\n                                \n                                <div class=\"form-row\">\n                                    <label class=\"form-label\">Deployment Time</label>\n                                    <input type=\"time\" class=\"form-input\" id=\"scheduleTime\" onchange=\"updateScheduleButton()\" />\n                                </div>\n                                \n                                <div class=\"form-row\">\n                                    <label class=\"form-label\">Timezone</label>\n                                    <select class=\"form-input\" id=\"timezone\" onchange=\"updateScheduleButton()\">\n                                        <option value=\"UTC\">UTC (Coordinated Universal Time)</option>\n                                        <option value=\"Africa/Tunis\" selected>Tunisia Time (UTC+1)</option>\n                                        <option value=\"America/New_York\">EST (Eastern Time)</option>\n                                        <option value=\"America/Los_Angeles\">PST (Pacific Time)</option>\n                                        <option value=\"Europe/London\">GMT (Greenwich Mean Time)</option>\n                                        <option value=\"Europe/Paris\">CET (Central European Time)</option>\n                                        <option value=\"Asia/Tokyo\">JST (Japan Standard Time)</option>\n                                        <option value=\"Australia/Sydney\">AEST (Australian Eastern Time)</option>\n                                    </select>\n                                </div>\n                                \n                                <div class=\"form-row\">\n                                    <label class=\"form-label\">Description (Optional)</label>\n                                    <input type=\"text\" class=\"form-input\" id=\"description\" placeholder=\"e.g., Production release v2.1.0\" onchange=\"updateScheduleButton()\" />\n                                </div>\n                                \n                                <div style=\"text-align: center;\">\n                                    <a href=\"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?description=Custom%20Scheduled%20Deployment&ref=main&cron=0%2012%20*%20*%20*&cron_timezone=Africa/Tunis&active=true&project_id={{$json.project_id}}&pipeline_id={{$json.pipeline_id}}&job_id={{$json.job_id}}\" \n                                       class=\"schedule-btn\" id=\"customScheduleBtn\">\n                                        🕒 Schedule Custom Deployment\n                                    </a>\n                                </div>\n                                \n                                <!-- Additional preset options -->\n                                <div style=\"margin-top: 30px; padding-top: 20px; border-top: 2px solid #e9ecef;\">\n                                    <div style=\"text-align: center; margin-bottom: 15px; font-weight: 600; color: #495057;\">\n                                        ⚡ Or use these quick options:\n                                    </div>\n                                    <div style=\"text-align: center;\">\n                                        <a href=\"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?description=Today%20Evening%20Deployment&ref=main&cron=0%2018%20*%20*%20*&cron_timezone=Africa/Tunis&active=true&project_id={{$json.project_id}}&pipeline_id={{$json.pipeline_id}}&job_id={{$json.job_id}}\" class=\"schedule-btn\" style=\"font-size: 14px; padding: 12px 20px; margin: 5px;\">\n                                            🕒 Today 6:00 PM\n                                        </a>\n                                        <br>\n                                        <a href=\"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?description=Weekend%20Deployment&ref=main&cron=0%2010%20*%20*%206&cron_timezone=Africa/Tunis&active=true&project_id={{$json.project_id}}&pipeline_id={{$json.pipeline_id}}&job_id={{$json.job_id}}\" class=\"schedule-btn\" style=\"font-size: 14px; padding: 12px 20px; margin: 5px;\">\n                                            🕒 Saturday 10:00 AM\n                                        </a>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                        \n                        <div class=\"schedule-info\">\n                            <strong>💡 Scheduling Notes:</strong><br>\n                            • Scheduled deployments will run automatically at the specified time<br>\n                            • You'll receive email notifications before and after deployment<br>\n                            • Scheduled deployments can be cancelled up to 1 hour before execution<br>\n                            • All times are converted to your selected timezone<br>\n                            • Project ID, Pipeline ID, and Job ID will be included automatically\n                        </div>\n                    </div>\n                </td>\n            </tr>\n            \n            <tr>\n                <td>\n                    <!-- Footer Section -->\n                    <div class=\"footer-section\">\n                        <p><strong>🤖 Automated DevOps Pipeline Notification</strong></p>\n                        <p>This message was automatically generated by your CI/CD pipeline via n8n automation.</p>\n                        <p>For technical support, contact your DevOps team or system administrator.</p>\n                        \n                        <div class=\"timestamp\">\n                            Generated: <span id=\"currentTime\"></span> | Request ID: #<span id=\"requestId\"></span>\n                        </div>\n                    </div>\n                </td>\n            </tr>\n        </table>\n    </div>\n\n    <script>\n        // Set current timestamp and request ID\n        document.getElementById('currentTime').textContent = new Date().toLocaleString();\n        document.getElementById('requestId').textContent = Math.random().toString(36).substr(2, 9).toUpperCase();\n        \n        // Set minimum date to today\n        document.getElementById('scheduleDate').min = new Date().toISOString().split('T')[0];\n        \n        // Set default time to 1 hour from now\n        const now = new Date();\n        now.setHours(now.getHours() + 1);\n        document.getElementById('scheduleTime').value = now.toTimeString().slice(0, 5);\n        \n        // Initialize the schedule button with default values\n        updateScheduleButton();\n\n        // Function to convert date/time to cron format\n        function dateToCron(dateStr, timeStr) {\n            if (!dateStr || !timeStr) {\n                return '0 12 * * *'; // Default to 12:00 PM daily\n            }\n            \n            const date = new Date(`${dateStr}T${timeStr}`);\n            const minute = date.getMinutes();\n            const hour = date.getHours();\n            const day = date.getDate();\n            const month = date.getMonth() + 1;\n            \n            // For specific date scheduling\n            return `${minute} ${hour} ${day} ${month} *`;\n        }\n\n        // Function to update the schedule button URL dynamically\n        function updateScheduleButton() {\n            const date = document.getElementById('scheduleDate').value;\n            const time = document.getElementById('scheduleTime').value;\n            const timezone = document.getElementById('timezone').value;\n            const description = document.getElementById('description').value || 'Custom Scheduled Deployment';\n            \n            // Generate cron expression\n            const cron = dateToCron(date, time);\n            \n            // Get dynamic IDs from the spans\n            const projectId = document.getElementById('projectId').textContent;\n            const pipelineId = document.getElementById('pipelineIdMain').textContent;\n            const jobId = document.getElementById('jobId').textContent;\n            \n            // Build the webhook URL with all parameters\n            const baseUrl = 'https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline';\n            const params = new URLSearchParams({\n                description: description,\n                ref: 'main',\n                cron: cron,\n                cron_timezone: timezone,\n                active: 'true',\n                project_id: projectId,\n                pipeline_id: pipelineId,\n                job_id: jobId,\n                scheduled_date: date || new Date().toISOString().split('T')[0],\n                scheduled_time: time || '12:00',\n                timezone: timezone\n            });\n            \n            const webhookUrl = `${baseUrl}?${params.toString()}`;\n            \n            // Update the button href\n            const button = document.getElementById('customScheduleBtn');\n            button.href = webhookUrl;\n            \n            // Update button text to show selected time\n            if (date && time) {\n                const selectedDate = new Date(`${date}T${time}`);\n                const options = {\n                    weekday: 'short',\n                    month: 'short', \n                    day: 'numeric',\n                    hour: '2-digit',\n                    minute: '2-digit'\n                };\n                const formattedDate = selectedDate.toLocaleDateString('en-US', options);\n                button.innerHTML = `🕒 Schedule for ${formattedDate}`;\n            } else {\n                button.innerHTML = '🕒 Schedule Custom Deployment';\n            }\n        }\n        \n        // Ensure proper button styling on load\n        document.addEventListener('DOMContentLoaded', function() {\n            // Apply consistent styling to all buttons\n            const buttons = document.querySelectorAll('.webhook-btn, .schedule-btn, .quick-btn');\n            buttons.forEach(function(button) {\n                button.style.display = 'inline-block';\n                button.style.textDecoration = 'none';\n                button.style.cursor = 'pointer';\n                \n                // Add hover effects\n                button.addEventListener('mouseenter', function() {\n                    this.style.textDecoration = 'none';\n                    if (!this.classList.contains('webhook-btn')) {\n                        this.style.transform = 'translateY(-2px)';\n                    }\n                });\n                \n                button.addEventListener('mouseleave', function() {\n                    this.style.textDecoration = 'none';\n                    if (!this.classList.contains('webhook-btn')) {\n                        this.style.transform = 'translateY(0)';\n                    }\n                });\n            });\n        });\n    </script>\n</body>\n</html>",
+        "options": {
+          "ccList": "boualleguimoetaz@gmail.com"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -160,
+        -660
+      ],
+      "id": "310f7444-dce5-42e8-9944-7a60d99f7455",
+      "name": "Gmail1",
+      "webhookId": "9fd42619-082e-49ca-af11-e66140597f3b",
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2OaVRLJuOJZtjjLr",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"Webhook reçu avec succès\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        1880,
+        280
+      ],
+      "id": "119c8232-7d9c-4977-b440-df4493dbf154",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"Webhook reçu avec succès\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        1880,
+        -540
+      ],
+      "id": "db68eb5d-954e-4738-ab11-2f5dbe91c622",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0948N681NY",
+          "mode": "list",
+          "cachedResultName": "new-channel"
+        },
+        "messageType": "block",
+        "blocksUi": "={\n\t\"blocks\": [\n\t\t{\n\t\t\t\"type\": \"header\",\n\t\t\t\"text\": {\n\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\"text\": \"🚀 DevOps Pipeline Alert\",\n\t\t\t\t\"emoji\": true\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"section\",\n\t\t\t\"text\": {\n\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\"text\": \"*Hello <@U123456789>,* :wave:\\n\\n:clipboard: The *SonarQube analysis* for project `TEST DEVOPS` has been completed successfully with no blocking issues detected!\"\n\t\t\t},\n\t\t\t\"accessory\": {\n\t\t\t\t\"type\": \"image\",\n\t\t\t\t\"image_url\": \"https://cdn-icons-png.flaticon.com/512/2065/2065138.png\",\n\t\t\t\t\"alt_text\": \"DevOps\"\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"section\",\n\t\t\t\"text\": {\n\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\"text\": \"*:bar_chart: Pipeline Status Dashboard*\"\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"section\",\n\t\t\t\"fields\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\t\"text\": \"*Project:*\\n`TEST DEVOPS`\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\t\"text\": \"*Branch:*\\n`main`\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\t\"text\": \"*Analysis Status:*\\n:white_check_mark: Passed\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\t\"text\": \"*Quality Gate:*\\n:white_check_mark: Passed\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\t\"text\": \"*Current Stage:*\\n:large_green_circle: SonarQube Complete\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\t\"text\": \"*Next Stage:*\\n:rocket: Deployment Ready\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\t\"text\": \"*Estimated Deploy Time:*\\n:stopwatch: ~5 minutes\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\t\"text\": \"*Action Required:*\\n:point_right: Pipeline Approval\"\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"type\": \"divider\"\n\t\t},\n\t\t{\n\t\t\t\"type\": \"section\",\n\t\t\t\"text\": {\n\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\"text\": \":question: *Choose your deployment action:*\"\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"actions\",\n\t\t\t\"block_id\": \"immediate_actions\",\n\t\t\t\"elements\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"button\",\n\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\"text\": \"✅ Deploy Now\",\n\t\t\t\t\t\t\"emoji\": true\n\t\t\t\t\t},\n\t\t\t\t\t\"style\": \"primary\",\n\t\t\t\t\t\"url\": \"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?action=deploy-now&project=TEST%20DEVOPS&branch=main&scheduled_datetime=immediate&timezone=Africa/Tunis\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"button\",\n\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\"text\": \"❌ Cancel Pipeline\",\n\t\t\t\t\t\t\"emoji\": true\n\t\t\t\t\t},\n\t\t\t\t\t\"style\": \"danger\",\n\t\t\t\t\t\"url\": \"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?action=cancel-pipeline&project=TEST%20DEVOPS&branch=main\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"button\",\n\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\"text\": \"📊 View SonarQube\",\n\t\t\t\t\t\t\"emoji\": true\n\t\t\t\t\t},\n\t\t\t\t\t\"url\": \"https://sonarqube.yourdomain.com/dashboard?id=TEST-DEVOPS\"\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"type\": \"divider\"\n\t\t},\n\t\t{\n\t\t\t\"type\": \"section\",\n\t\t\t\"text\": {\n\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\"text\": \":calendar: *Schedule Deployment*\\n_Choose from quick options below_\"\n\t\t\t},\n\t\t\t\"accessory\": {\n\t\t\t\t\"type\": \"image\",\n\t\t\t\t\"image_url\": \"https://cdn-icons-png.flaticon.com/512/3652/3652267.png\",\n\t\t\t\t\"alt_text\": \"Schedule\"\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"section\",\n\t\t\t\"text\": {\n\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\"text\": \":zap: *Quick Schedule Options*\"\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"actions\",\n\t\t\t\"block_id\": \"quick_schedule_options\",\n\t\t\t\"elements\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"button\",\n\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\"text\": \"🌅 This Morning 9:00 AM\",\n\t\t\t\t\t\t\"emoji\": true\n\t\t\t\t\t},\n\t\t\t\t\t\"url\": \"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?action=schedule-quick&project=TEST%20DEVOPS&branch=main&scheduled_time=this_morning_9am&scheduled_datetime=2024-07-26T09:00:00%2B01:00&timezone=Africa/Tunis&display_name=This%20Morning%209:00%20AM\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"button\",\n\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\"text\": \"☀️ This Afternoon 12:00 PM\",\n\t\t\t\t\t\t\"emoji\": true\n\t\t\t\t\t},\n\t\t\t\t\t\"url\": \"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?action=schedule-quick&project=TEST%20DEVOPS&branch=main&scheduled_time=this_afternoon_12pm&scheduled_datetime=2024-07-26T12:00:00%2B01:00&timezone=Africa/Tunis&display_name=This%20Afternoon%2012:00%20PM\"\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"type\": \"actions\",\n\t\t\t\"block_id\": \"quick_schedule_options_2\",\n\t\t\t\"elements\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"button\",\n\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\"text\": \"🌄 Tomorrow 8:00 AM\",\n\t\t\t\t\t\t\"emoji\": true\n\t\t\t\t\t},\n\t\t\t\t\t\"url\": \"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?action=schedule-quick&project=TEST%20DEVOPS&branch=main&scheduled_time=tomorrow_8am&scheduled_datetime=2024-07-27T08:00:00%2B01:00&timezone=Africa/Tunis&display_name=Tomorrow%208:00%20AM\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"button\",\n\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\"text\": \"📅 Monday Morning 8:00 AM\",\n\t\t\t\t\t\t\"emoji\": true\n\t\t\t\t\t},\n\t\t\t\t\t\"url\": \"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?action=schedule-quick&project=TEST%20DEVOPS&branch=main&scheduled_time=monday_morning_8am&scheduled_datetime=2024-07-29T08:00:00%2B01:00&timezone=Africa/Tunis&display_name=Monday%20Morning%208:00%20AM\"\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"type\": \"section\",\n\t\t\t\"text\": {\n\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\"text\": \"*More Quick Options:*\"\n\t\t\t},\n\t\t\t\"accessory\": {\n\t\t\t\t\"type\": \"overflow\",\n\t\t\t\t\"action_id\": \"more_schedule_options\",\n\t\t\t\t\"options\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\t\"text\": \"🌞 This Morning 11:00 AM\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"url\": \"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?action=schedule-overflow&project=TEST%20DEVOPS&branch=main&scheduled_time=this_morning_11am&scheduled_datetime=2024-07-26T11:00:00%2B01:00&timezone=Africa/Tunis&display_name=This%20Morning%2011:00%20AM\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\t\"text\": \"🌤️ This Afternoon 2:00 PM\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"url\": \"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?action=schedule-overflow&project=TEST%20DEVOPS&branch=main&scheduled_time=this_afternoon_2pm&scheduled_datetime=2024-07-26T14:00:00%2B01:00&timezone=Africa/Tunis&display_name=This%20Afternoon%202:00%20PM\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\t\"text\": \"🌄 Tomorrow 9:00 AM\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"url\": \"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?action=schedule-overflow&project=TEST%20DEVOPS&branch=main&scheduled_time=tomorrow_9am&scheduled_datetime=2024-07-27T09:00:00%2B01:00&timezone=Africa/Tunis&display_name=Tomorrow%209:00%20AM\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\t\"text\": \"📅 Monday Morning 9:00 AM\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"url\": \"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?action=schedule-overflow&project=TEST%20DEVOPS&branch=main&scheduled_time=monday_morning_9am&scheduled_datetime=2024-07-29T09:00:00%2B01:00&timezone=Africa/Tunis&display_name=Monday%20Morning%209:00%20AM\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\t\"text\": \"📅 Next Tuesday 9:00 AM\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"url\": \"https://sol-webmaster-living-distance.trycloudflare.com/webhook/schedule-pipeline?action=schedule-overflow&project=TEST%20DEVOPS&branch=main&scheduled_time=next_tuesday_9am&scheduled_datetime=2024-07-30T09:00:00%2B01:00&timezone=Africa/Tunis&display_name=Next%20Tuesday%209:00%20AM\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"divider\"\n\t\t},\n\t\t{\n\t\t\t\"type\": \"section\",\n\t\t\t\"text\": {\n\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\"text\": \":gear: *Custom Schedule*\\n_Need a specific date and time? Fill the form below and click schedule_\"\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"input\",\n\t\t\t\"block_id\": \"custom_datetime_input\",\n\t\t\t\"element\": {\n\t\t\t\t\"type\": \"datetimepicker\",\n\t\t\t\t\"action_id\": \"custom_scheduled_datetime\"\n\t\t\t},\n\t\t\t\"label\": {\n\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\"text\": \"Select Custom Date & Time\"\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"input\",\n\t\t\t\"block_id\": \"custom_timezone_input\",\n\t\t\t\"element\": {\n\t\t\t\t\"type\": \"static_select\",\n\t\t\t\t\"action_id\": \"custom_timezone_select\",\n\t\t\t\t\"placeholder\": {\n\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\"text\": \"Select timezone\"\n\t\t\t\t},\n\t\t\t\t\"initial_option\": {\n\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\"text\": \"Tunisia Time (UTC+1)\"\n\t\t\t\t\t},\n\t\t\t\t\t\"value\": \"Africa/Tunis\"\n\t\t\t\t},\n\t\t\t\t\"options\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\t\"text\": \"UTC\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"value\": \"UTC\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\t\"text\": \"Tunisia Time (UTC+1)\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"value\": \"Africa/Tunis\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\t\"text\": \"EST (Eastern Time)\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"value\": \"America/New_York\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\t\"text\": \"PST (Pacific Time)\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"value\": \"America/Los_Angeles\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\t\"text\": \"GMT\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"value\": \"Europe/London\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\t\"text\": \"CET\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"value\": \"Europe/Paris\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"label\": {\n\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\"text\": \"Select Timezone\"\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"input\",\n\t\t\t\"block_id\": \"custom_description_input\",\n\t\t\t\"optional\": true,\n\t\t\t\"element\": {\n\t\t\t\t\"type\": \"plain_text_input\",\n\t\t\t\t\"action_id\": \"custom_deployment_description\",\n\t\t\t\t\"placeholder\": {\n\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\"text\": \"e.g., Production release v2.1.0, Hotfix deployment, etc.\"\n\t\t\t\t},\n\t\t\t\t\"max_length\": 200\n\t\t\t},\n\t\t\t\"label\": {\n\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\"text\": \"Deployment Description (Optional)\"\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"actions\",\n\t\t\t\"block_id\": \"custom_schedule_confirm\",\n\t\t\t\"elements\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"button\",\n\t\t\t\t\t\"text\": {\n\t\t\t\t\t\t\"type\": \"plain_text\",\n\t\t\t\t\t\t\"text\": \"🕒 Schedule Custom Deployment\",\n\t\t\t\t\t\t\"emoji\": true\n\t\t\t\t\t},\n\t\t\t\t\t\"style\": \"primary\",\n\t\t\t\t\t\"action_id\": \"schedule_custom_deployment\",\n\t\t\t\t\t\"value\": \"{\\\"action\\\":\\\"schedule-custom\\\",\\\"project\\\":\\\"TEST DEVOPS\\\",\\\"branch\\\":\\\"main\\\",\\\"source\\\":\\\"custom_form\\\"}\"\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"type\": \"context\",\n\t\t\t\"elements\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\t\"text\": \":information_source: *Scheduling Notes:* Quick schedules use Tunisia Time (UTC+1) | Custom schedules respect your selected timezone | Email notifications sent before and after deployment | Can be cancelled up to 1 hour before execution\"\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"type\": \"divider\"\n\t\t},\n\t\t{\n\t\t\t\"type\": \"section\",\n\t\t\t\"text\": {\n\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\"text\": \":bulb: *Quick Commands:*\\n• Reply with `deploy` or `confirm` for immediate deployment\\n• Reply with `cancel` to cancel the pipeline\\n• Reply with `morning`, `afternoon`, `tomorrow`, or `monday` for quick scheduling\\n• Reply with `schedule` to open custom scheduling options\"\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"type\": \"context\",\n\t\t\t\"elements\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\t\"text\": \":robot_face: *Automated Pipeline Notification* | Generated by N8N DevOps Workflow | Enhanced Schedule System v2.0\"\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -160,
+        -360
+      ],
+      "id": "7a4bae2d-b374-4644-8d3a-b896ffc4f4df",
+      "name": "Slack2",
+      "webhookId": "2fb5659b-a193-4a89-a4a7-e6bd9a005b0b",
+      "alwaysOutputData": true,
+      "credentials": {
+        "slackApi": {
+          "id": "2MosqMdqMzR31inF",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "merge-accept",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        340,
+        -540
+      ],
+      "id": "de790913-ce28-4a00-9933-a7612ba2028f",
+      "name": "merge-accept",
+      "webhookId": "c41153f3-3b5a-49aa-bc2e-392bf28eb794"
+    },
+    {
+      "parameters": {
+        "path": "merge-cancel",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        340,
+        -220
+      ],
+      "id": "02e03624-aa4d-400a-baf0-6e419b8c4652",
+      "name": "merge-cancel",
+      "webhookId": "ab555737-7cf3-4cf0-a1b8-840d369e95e9"
+    },
+    {
+      "parameters": {
+        "sendTo": "younes.bouallegui@esprit.tn",
+        "subject": "hi",
+        "emailType": "text",
+        "message": "hola",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1160,
+        -440
+      ],
+      "id": "9f12cd99-245e-4258-858c-2143f2b1a16d",
+      "name": "Gmail2",
+      "webhookId": "7ae598ee-e77c-463c-b380-de4ecbf1213a",
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2OaVRLJuOJZtjjLr",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0948N681NY",
+          "mode": "list",
+          "cachedResultName": "new-channel"
+        },
+        "text": "hello",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1160,
+        -660
+      ],
+      "id": "4ca8d037-b790-412e-b81d-d4e75e7f1d2e",
+      "name": "Slack3",
+      "webhookId": "883531ae-d33f-4f97-8961-caf55cda50d5",
+      "alwaysOutputData": true,
+      "credentials": {
+        "slackApi": {
+          "id": "2MosqMdqMzR31inF",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "younes.bouallegui@esprit.tn",
+        "subject": "hello",
+        "emailType": "text",
+        "message": "hello",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1160,
+        -60
+      ],
+      "id": "f0c9f706-0f3c-4489-b938-6c34fb216ac8",
+      "name": "Gmail3",
+      "webhookId": "1c7dc0d9-c7d0-44c0-ba2c-2fc61ad00ad9",
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2OaVRLJuOJZtjjLr",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0948N681NY",
+          "mode": "list",
+          "cachedResultName": "new-channel"
+        },
+        "text": "hello",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1160,
+        -320
+      ],
+      "id": "86645818-3328-47c1-945c-a4c4098591a5",
+      "name": "Slack4",
+      "webhookId": "6c1042b6-9450-4587-a69b-52bc126070b0",
+      "alwaysOutputData": true,
+      "credentials": {
+        "slackApi": {
+          "id": "2MosqMdqMzR31inF",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://git.grepsys.com/api/v4/projects/{{ $json[\"project_id\"] }}/pipelines/{{ $json[\"pipeline_id\"] }}/cancel\n",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        680,
+        300
+      ],
+      "id": "7726ac8a-31f4-4301-8a37-62232d531f8d",
+      "name": "Cancel GitLab Pipeline",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Mh9RGw2NCrKZlhv2",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 🎯 Trigger & Initial Data\n**Double click** to edit me. Déclenche le workflow suite à un événement GitLab (push, pipeline, etc.)",
+        "height": 320,
+        "width": 300,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1640,
+        -480
+      ],
+      "id": "62a905e1-f73d-42df-a4d0-da1f2c77a286",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## 🔍 Check Sonar Status\n**Double click** to edit me. Récupère tous les jobs du pipeline GitLab, puis filtre uniquement celui nommé sonar",
+        "height": 320,
+        "width": 460,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1320,
+        -480
+      ],
+      "id": "e8ee4a80-8665-4729-8438-8e4bd2ae690e",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## IF Check Sonar Status \n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/sticky-notes/)",
+        "height": 320,
+        "width": 280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -840,
+        -480
+      ],
+      "id": "dc35aea3-7b51-413c-80df-bb07a35eb2d6",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Sonar Passed Actions\n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/sticky-notes/)",
+        "height": 1160,
+        "width": 520,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        -1080
+      ],
+      "id": "3f7412ee-6d40-4d2b-9f9e-7a2d806ce59b",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Handle Maintainer Response \n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/sticky-notes/)",
+        "height": 1160,
+        "width": 1340,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        -1080
+      ],
+      "id": "bfc927e3-796d-419a-aab5-554dd04e7141",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Sonar Failed Actions \n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/sticky-notes/)",
+        "height": 440,
+        "width": 1880,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        100
+      ],
+      "id": "eeeee9f1-cba7-448c-b276-f976b10f4e55",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## And workflow\n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/sticky-notes/)",
+        "height": 1620,
+        "width": 500,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        -1080
+      ],
+      "id": "82728b54-6ad4-494d-94e8-4ad2edfa18b9",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Workflow GitLab CI/CD Pipeline Automation",
+        "height": 1740,
+        "width": 3940,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1720,
+        -1140
+      ],
+      "id": "48c59d13-43d4-41fb-a2ad-a01a0a4fe555",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://git.grepsys.com/api/v4/projects/{{ $json[\"project_id\"] }}/jobs/{{ $json[\"job_id\"] }}/play",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "PRIVATE-TOKEN",
+              "value": "glpat-jmJJZmovZVjTUsFx2Pt_"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        -540
+      ],
+      "id": "da2097d0-a735-46e4-bd34-396bf734dd59",
+      "name": "GitLab Play Pipeline"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://git.grepsys.com/api/v4/projects/{{ $json[\"project_id\"] }}/pipelines/{{ $json[\"pipeline_id\"] }}/cancel",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        -220
+      ],
+      "id": "9bfc7d10-a507-4379-9a1e-43c05ed3d71f",
+      "name": "GitLab Cancel Pipeline",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Mh9RGw2NCrKZlhv2",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "31154b38-7ec6-4a29-8158-119feb60a2b4",
+              "name": "project_id",
+              "value": "={{$json.body.project_id}}",
+              "type": "string"
+            },
+            {
+              "id": "8122785b-24d6-4a03-886b-7cee30f171b3",
+              "name": "pipeline_id",
+              "value": "={{$json.body.pipeline_id}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        600,
+        -220
+      ],
+      "id": "36f28663-af4b-4de9-b173-0088c1668002",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0948N681NY",
+          "mode": "list",
+          "cachedResultName": "new-channel"
+        },
+        "text": "hello",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1160,
+        -1000
+      ],
+      "id": "c7f04a64-203e-4be6-8c87-cb4b7a6a4681",
+      "name": "Slack5",
+      "webhookId": "883531ae-d33f-4f97-8961-caf55cda50d5",
+      "alwaysOutputData": true,
+      "credentials": {
+        "slackApi": {
+          "id": "2MosqMdqMzR31inF",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "younes.bouallegui@esprit.tn",
+        "subject": "hi",
+        "emailType": "text",
+        "message": "hola",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1160,
+        -800
+      ],
+      "id": "38663649-b604-486e-ac11-235b7e20832a",
+      "name": "Gmail4",
+      "webhookId": "7ae598ee-e77c-463c-b380-de4ecbf1213a",
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2OaVRLJuOJZtjjLr",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "31154b38-7ec6-4a29-8158-119feb60a2b4",
+              "name": "project_id",
+              "value": "={{$json.query.project_id}}",
+              "type": "string"
+            },
+            {
+              "id": "8122785b-24d6-4a03-886b-7cee30f171b3",
+              "name": "pipeline_id",
+              "value": "={{$json.query.pipeline_id}}",
+              "type": "string"
+            },
+            {
+              "id": "98951911-8d6b-4ef7-bd55-816843c8711c",
+              "name": "job_id",
+              "value": "={{$json.query.job_id}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        600,
+        -540
+      ],
+      "id": "b2f0d536-5863-4886-aa39-23574c608424",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "31154b38-7ec6-4a29-8158-119feb60a2b4",
+              "name": "project_id",
+              "value": "={{$json.query.project_id}}",
+              "type": "string"
+            },
+            {
+              "id": "8122785b-24d6-4a03-886b-7cee30f171b3",
+              "name": "pipeline_id",
+              "value": "={{$json.query.pipeline_id}}",
+              "type": "string"
+            },
+            {
+              "id": "98951911-8d6b-4ef7-bd55-816843c8711c",
+              "name": "job_id",
+              "value": "={{$json.query.job_id}}",
+              "type": "string"
+            },
+            {
+              "id": "9c263856-9c01-4442-8def-3c3ffa873e3b",
+              "name": "ref",
+              "value": "={{$json.query.ref}}",
+              "type": "string"
+            },
+            {
+              "id": "f3abcd52-5938-4a34-87ba-1f6799a5ddac",
+              "name": "cron",
+              "value": "={{$json.query.cron}}",
+              "type": "string"
+            },
+            {
+              "id": "21a0fb7a-1b21-40ec-bca4-01ef9775d1ca",
+              "name": "cron_timezone",
+              "value": "={{$json.query.cron_timezone}}",
+              "type": "string"
+            },
+            {
+              "id": "e859944f-9380-41fc-91d0-7193224df424",
+              "name": "active",
+              "value": "={{$json.query.active}}",
+              "type": "string"
+            },
+            {
+              "id": "ef74a119-9118-4067-9c8a-802a52ec59e6",
+              "name": "description",
+              "value": "={{$json.query.description}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        600,
+        -900
+      ],
+      "id": "59760751-a8b9-42a2-a74b-e9705379d2c1",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "path": "schedule-pipeline",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        340,
+        -900
+      ],
+      "id": "c1b87d99-7ef1-4cff-89cd-6047bf2f5806",
+      "name": "schedule-pipeline",
+      "webhookId": "3e0d3382-820c-4ff6-905d-aed46960f0db"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://git.grepsys.com/api/v4/projects/{{ $json[\"project_id\"] }}//pipeline_schedules\n",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"description\": \"{{ $json.description }}\",\n  \"ref\": \"{{ $json.ref }}\",\n  \"cron\": \"{{ $json.cron }}\",\n  \"cron_timezone\": \"{{ $json.cron_timezone }}\",\n  \"active\": true\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        -900
+      ],
+      "id": "53e95e43-7c0d-45da-b274-52164b3e06eb",
+      "name": "gitlab schedule pipeline",
+      "credentials": {
+        "gitlabApi": {
+          "id": "6Ok5qB73cDgKJRMJ",
+          "name": "GitLab account"
+        },
+        "httpHeaderAuth": {
+          "id": "Mh9RGw2NCrKZlhv2",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9c944847-7f61-4e57-970c-91821dca2fad",
+              "name": "project_id",
+              "value": "={{ $node[\"If\"].json[\"project_id\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "bce2a8a7-13db-4368-9d81-7cea185d90e4",
+              "name": "pipeline_id",
+              "value": "={{ $node[\"If\"].json[\"pipeline_id\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        300
+      ],
+      "id": "f6af58b5-56ac-4cb2-a3d1-56c729a2f785",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "url": "=https://git.grepsys.com/api/v4/projects/{{ $json[\"body\"][\"project_id\"] }}/pipelines/{{ $json[\"body\"][\"pipeline_id\"] }}/jobs\n",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1260,
+        -340
+      ],
+      "id": "026f39c2-336e-4bd7-bf9d-dcf1b8f2bf43",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Mh9RGw2NCrKZlhv2",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const jobs = $input.all().flatMap(item => item.json);\n\n// 🔍 On récupère les jobs cibles\nconst sonarJob = jobs.find(j => j.name === 'sonarqube_analysis');\nconst approvalJob = jobs.find(j => j.name === 'wait_for_n8n_decision');\n\n// 📦 On récupère des infos de contexte du pipeline\nconst pipeline = jobs[0]?.pipeline || {};\nconst pipelineId = pipeline.id || null;\nconst projectId = pipeline.project_id || null;\nconst projectName = pipeline.web_url?.split('/')?.[5] || null;  // Extraction depuis l'URL GitLab\nconst branch = jobs[0]?.ref || null;\n\nreturn [\n  {\n    json: {\n      status: sonarJob?.status || 'unknown',\n      job_id: approvalJob?.id || null,\n      pipeline_id: pipelineId,\n      project_id: projectId,\n      project_name: projectName,\n      branch: branch\n    },\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1040,
+        -340
+      ],
+      "id": "5a8fc04e-8cd3-4c4e-8c66-7f6621123298",
+      "name": "Code"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Slack2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gmail1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail1": {
+      "main": [
+        []
+      ]
+    },
+    "merge-cancel": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "merge-accept": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail2": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack3": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail3": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cancel GitLab Pipeline": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack4": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitLab Play Pipeline": {
+      "main": [
+        [
+          {
+            "node": "Gmail2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Slack3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitLab Cancel Pipeline": {
+      "main": [
+        [
+          {
+            "node": "Gmail3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Slack4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "GitLab Cancel Pipeline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack2": {
+      "main": [
+        []
+      ]
+    },
+    "Slack5": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail4": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "GitLab Play Pipeline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "gitlab schedule pipeline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "schedule-pipeline": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gitlab schedule pipeline": {
+      "main": [
+        [
+          {
+            "node": "Slack5",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gmail4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Cancel GitLab Pipeline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ed5b213e-993a-4d39-a2a6-d5a6d5d240de",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "74e7f60e06c791065bb244a82dab123077e66e4f9d9d304504ae0a895cee5794"
+  },
+  "id": "1wTAYLyODU0ge4GP",
+  "tags": []
+}
