@@ -22,15 +22,15 @@ function ProjectModal({ project, onClose, viewDemo, sourceCode }: { project: { t
   if (!project) return null;
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-background/80 backdrop-blur-sm">
-      <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} onClick={(e) => e.stopPropagation()} className="glass-card max-w-2xl w-full p-8 relative">
+      <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} onClick={(e) => e.stopPropagation()} className="glass-card max-w-2xl w-full p-8 relative max-h-[80vh] overflow-y-auto">
         <button onClick={onClose} className="absolute top-4 end-4 text-muted-foreground hover:text-foreground transition-colors"><X className="w-6 h-6" /></button>
         <div className={`w-full h-2 rounded-full mb-6 ${project.color === 'primary' ? 'bg-gradient-to-r from-primary to-neon-blue' : 'bg-gradient-to-r from-secondary to-primary'}`} />
         <h3 className="font-display text-2xl font-bold mb-4">{project.title}</h3>
-        <p className="text-muted-foreground mb-6">{project.longDescription}</p>
+        <p className="text-muted-foreground mb-6 whitespace-pre-line">{project.longDescription}</p>
         <div className="flex flex-wrap gap-2 mb-8">{project.tags.map((tag) => <span key={tag} className="text-sm px-3 py-1 rounded-full bg-primary/10 text-primary">{tag}</span>)}</div>
         <div className="flex gap-4">
           <Button variant="hero" size="sm"><ExternalLink className="w-4 h-4 me-2" />{viewDemo}</Button>
-          <Button variant="heroOutline" size="sm"><Github className="w-4 h-4 me-2" />{sourceCode}</Button>
+          <Button variant="heroOutline" size="sm" asChild><a href="https://github.com/Younesbouallegui" target="_blank" rel="noopener noreferrer"><Github className="w-4 h-4 me-2" />{sourceCode}</a></Button>
         </div>
       </motion.div>
     </motion.div>
@@ -44,10 +44,12 @@ export default function ProjectsSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const projects = [
-    { title: t('projects.iacTitle'), description: t('projects.iacDesc'), longDescription: t('projects.iacLongDesc'), tags: ['Terraform', 'AWS', 'Python', 'GitLab CI'], color: 'primary' },
-    { title: t('projects.k8sTitle'), description: t('projects.k8sDesc'), longDescription: t('projects.k8sLongDesc'), tags: ['Kubernetes', 'Prometheus', 'Go', 'Alertmanager'], color: 'secondary' },
-    { title: t('projects.cicdTitle'), description: t('projects.cicdDesc'), longDescription: t('projects.cicdLongDesc'), tags: ['Jenkins', 'Docker', 'Ansible', 'Helm'], color: 'primary' },
-    { title: t('projects.workflowTitle'), description: t('projects.workflowDesc'), longDescription: t('projects.workflowLongDesc'), tags: ['n8n', 'Node.js', 'PostgreSQL', 'REST APIs'], color: 'secondary' },
+    { title: t('projects.mainTitle'), description: t('projects.mainDesc'), longDescription: t('projects.mainLongDesc'), tags: ['GitLab CI/CD', 'Jenkins', 'n8n', 'Docker', 'Kubernetes', 'SonarQube', 'Prometheus', 'Grafana'], color: 'primary' },
+    { title: t('projects.jenkinsTitle'), description: t('projects.jenkinsDesc'), longDescription: t('projects.jenkinsLongDesc'), tags: ['Jenkins', 'SonarQube', 'Nexus', 'Docker', 'Prometheus', 'Grafana'], color: 'secondary' },
+    { title: t('projects.springTitle'), description: t('projects.springDesc'), longDescription: t('projects.springLongDesc'), tags: ['Spring Boot', 'Java', 'REST API'], color: 'primary' },
+    { title: t('projects.microservicesTitle'), description: t('projects.microservicesDesc'), longDescription: t('projects.microservicesLongDesc'), tags: ['Spring Boot', 'Microservices', 'HTML', 'CSS', 'JavaScript'], color: 'secondary' },
+    { title: t('projects.votingTitle'), description: t('projects.votingDesc'), longDescription: t('projects.votingLongDesc'), tags: ['C', 'Linux'], color: 'primary' },
+    { title: t('projects.energyTitle'), description: t('projects.energyDesc'), longDescription: t('projects.energyLongDesc'), tags: ['Machine Learning', 'Deep Learning', '5G'], color: 'secondary' },
   ];
 
   return (
@@ -57,7 +59,7 @@ export default function ProjectsSection() {
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">{t('projects.title')} <span className="gradient-text">{t('projects.titleHighlight')}</span></h2>
           <p className="text-muted-foreground max-w-xl mx-auto">{t('projects.description')}</p>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => <ProjectCard key={project.title} project={project} index={index} onClick={() => setSelectedProject(project)} />)}
         </div>
       </div>

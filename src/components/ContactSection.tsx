@@ -1,6 +1,6 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { Send, Mail, MapPin, Linkedin, Github } from 'lucide-react';
+import { Send, Mail, MapPin, Linkedin, Github, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -24,9 +24,7 @@ export default function ContactSection() {
       const response = await fetch('https://formspree.io/f/mvzzodvk', {
         method: 'POST',
         body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
+        headers: { 'Accept': 'application/json' }
       });
 
       if (response.ok) {
@@ -56,11 +54,17 @@ export default function ContactSection() {
           <p className="text-muted-foreground max-w-xl mx-auto">{t('contact.description')}</p>
         </motion.div>
         <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.8, delay: 0.2 }} className="space-y-8">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.8, delay: 0.2 }} className="space-y-6">
             <div className="glass-card p-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center"><Mail className="w-6 h-6 text-primary" /></div>
-                <div><h3 className="font-display font-semibold">{t('contact.email')}</h3><p className="text-muted-foreground">hello@devops.engineer</p></div>
+                <div><h3 className="font-display font-semibold">{t('contact.email')}</h3><p className="text-muted-foreground">{t('contact.emailValue')}</p></div>
+              </div>
+            </div>
+            <div className="glass-card p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center"><Phone className="w-6 h-6 text-primary" /></div>
+                <div><h3 className="font-display font-semibold">{t('contact.phone')}</h3><p className="text-muted-foreground">{t('contact.phoneValue')}</p></div>
               </div>
             </div>
             <div className="glass-card p-6">
@@ -70,8 +74,8 @@ export default function ContactSection() {
               </div>
             </div>
             <div className="flex gap-4">
-              <motion.a href="#" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} className="glass-card-hover w-12 h-12 flex items-center justify-center"><Linkedin className="w-5 h-5" /></motion.a>
-              <motion.a href="#" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} className="glass-card-hover w-12 h-12 flex items-center justify-center"><Github className="w-5 h-5" /></motion.a>
+              <motion.a href="https://www.linkedin.com/in/younes-bouallegui" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} className="glass-card-hover w-12 h-12 flex items-center justify-center"><Linkedin className="w-5 h-5" /></motion.a>
+              <motion.a href="https://github.com/Younesbouallegui" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} className="glass-card-hover w-12 h-12 flex items-center justify-center"><Github className="w-5 h-5" /></motion.a>
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 30 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.8, delay: 0.3 }}>

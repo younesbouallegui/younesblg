@@ -24,18 +24,20 @@ export default function SkillsSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const skills = [
-    { name: 'Docker', category: t('skills.containerization'), color: 'primary' },
-    { name: 'Kubernetes', category: t('skills.orchestration'), color: 'secondary' },
-    { name: 'n8n', category: t('skills.automation'), color: 'primary' },
-    { name: 'GitLab CI', category: t('skills.cicd'), color: 'secondary' },
-    { name: 'Jenkins', category: t('skills.cicd'), color: 'primary' },
+    { name: 'Java', category: t('skills.scripting'), color: 'primary' },
     { name: 'Python', category: t('skills.scripting'), color: 'secondary' },
-    { name: 'Terraform', category: t('skills.iac'), color: 'primary' },
-    { name: 'AWS', category: t('skills.cloud'), color: 'secondary' },
-    { name: 'Linux', category: t('skills.systems'), color: 'primary' },
-    { name: 'Ansible', category: t('skills.automation'), color: 'secondary' },
+    { name: 'Spring Boot', category: t('skills.iac'), color: 'primary' },
+    { name: 'GitLab CI/CD', category: t('skills.cicd'), color: 'secondary' },
+    { name: 'Jenkins', category: t('skills.cicd'), color: 'primary' },
+    { name: 'Docker', category: t('skills.containerization'), color: 'secondary' },
+    { name: 'Kubernetes', category: t('skills.orchestration'), color: 'primary' },
+    { name: 'n8n', category: t('skills.automation'), color: 'secondary' },
+    { name: 'Nexus', category: t('skills.cloud'), color: 'primary' },
+    { name: 'SonarQube', category: t('skills.systems'), color: 'secondary' },
     { name: 'Prometheus', category: t('skills.monitoring'), color: 'primary' },
-    { name: 'Git', category: t('skills.versionControl'), color: 'secondary' },
+    { name: 'Grafana', category: t('skills.monitoring'), color: 'secondary' },
+    { name: 'Unit/Integration/E2E', category: t('skills.versionControl'), color: 'primary' },
+    { name: 'ML & Deep Learning', category: t('skills.aiml'), color: 'secondary' },
   ];
 
   return (

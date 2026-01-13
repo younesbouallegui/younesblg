@@ -35,6 +35,10 @@ export default function HeroSection() {
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span className="text-sm text-muted-foreground">{t('hero.available')}</span>
           </motion.div>
+
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.6 }} className="font-display text-2xl md:text-3xl font-semibold text-foreground">
+            {t('hero.name')}
+          </motion.p>
           
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.8 }} className="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
             <span className="block text-foreground">{t('hero.title1')}</span>
