@@ -116,7 +116,9 @@
     "messagePlaceholder": "Tell me about your project...",
     "send": "Send Message",
     "success": "Message sent successfully!",
-    "successDesc": "I'll get back to you as soon as possible."
+    "successDesc": "I'll get back to you as soon as possible.",
+    "error": "Failed to send message",
+    "errorDesc": "Please try again later or contact me directly via email."
   },
   "footer": {
     "builtWith": "Built with",

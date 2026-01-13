@@ -16,10 +16,35 @@ export default function ContactSection() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    toast.success(t('contact.success'), { description: t('contact.successDesc') });
-    (e.target as HTMLFormElement).reset();
+    
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch('https://formspree.io/f/mvzzodvk', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        toast.success(t('contact.success'), { description: t('contact.successDesc') });
+        form.reset();
+      } else {
+        const data = await response.json();
+        if (data.errors) {
+          toast.error(t('contact.error'), { description: data.errors.map((err: { message: string }) => err.message).join(', ') });
+        } else {
+          toast.error(t('contact.error'), { description: t('contact.errorDesc') });
+        }
+      }
+    } catch (error) {
+      toast.error(t('contact.error'), { description: t('contact.errorDesc') });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

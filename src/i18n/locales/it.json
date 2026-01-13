@@ -116,7 +116,9 @@
     "messagePlaceholder": "Parlami del tuo progetto...",
     "send": "Invia Messaggio",
     "success": "Messaggio inviato con successo!",
-    "successDesc": "Ti risponderò il prima possibile."
+    "successDesc": "Ti risponderò il prima possibile.",
+    "error": "Impossibile inviare il messaggio",
+    "errorDesc": "Riprova più tardi o contattami direttamente via email."
   },
   "footer": {
     "builtWith": "Costruito con",
