@@ -116,7 +116,9 @@
     "messagePlaceholder": "Erzählen Sie mir von Ihrem Projekt...",
     "send": "Nachricht senden",
     "success": "Nachricht erfolgreich gesendet!",
-    "successDesc": "Ich werde mich so schnell wie möglich bei Ihnen melden."
+    "successDesc": "Ich werde mich so schnell wie möglich bei Ihnen melden.",
+    "error": "Nachricht konnte nicht gesendet werden",
+    "errorDesc": "Bitte versuchen Sie es später erneut oder kontaktieren Sie mich direkt per E-Mail."
   },
   "footer": {
     "builtWith": "Erstellt mit",
