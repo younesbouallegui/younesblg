@@ -34,10 +34,10 @@ export default function ExperienceSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const experiences = [
-    { title: t('experience.seniorTitle'), company: t('experience.seniorCompany'), period: t('experience.seniorPeriod'), description: t('experience.seniorDesc') },
-    { title: t('experience.devopsTitle'), company: t('experience.devopsCompany'), period: t('experience.devopsPeriod'), description: t('experience.devopsDesc') },
-    { title: t('experience.automationTitle'), company: t('experience.automationCompany'), period: t('experience.automationPeriod'), description: t('experience.automationDesc') },
-    { title: t('experience.sysadminTitle'), company: t('experience.sysadminCompany'), period: t('experience.sysadminPeriod'), description: t('experience.sysadminDesc') },
+    { title: t('experience.pfeTitle'), company: t('experience.pfeCompany'), period: t('experience.pfePeriod'), description: t('experience.pfeDesc') },
+    { title: t('experience.webTitle'), company: t('experience.webCompany'), period: t('experience.webPeriod'), description: t('experience.webDesc') },
+    { title: t('experience.postTitle'), company: t('experience.postCompany'), period: t('experience.postPeriod'), description: t('experience.postDesc') },
+    { title: t('experience.civilTitle'), company: t('experience.civilCompany'), period: t('experience.civilPeriod'), description: t('experience.civilDesc') },
   ];
 
   return (
