@@ -26,7 +26,9 @@ export default function SkillsSection() {
   const skills = [
     { name: 'Java', category: t('skills.scripting'), color: 'primary' },
     { name: 'Python', category: t('skills.scripting'), color: 'secondary' },
-    { name: 'Spring Boot', category: t('skills.iac'), color: 'primary' },
+    { name: 'React', category: t('skills.scripting'), color: 'primary' },
+    { name: 'Spring Boot', category: t('skills.iac'), color: 'secondary' },
+    { name: 'Git', category: t('skills.versionControl'), color: 'primary' },
     { name: 'GitLab CI/CD', category: t('skills.cicd'), color: 'secondary' },
     { name: 'Jenkins', category: t('skills.cicd'), color: 'primary' },
     { name: 'Docker', category: t('skills.containerization'), color: 'secondary' },
@@ -36,8 +38,9 @@ export default function SkillsSection() {
     { name: 'SonarQube', category: t('skills.systems'), color: 'secondary' },
     { name: 'Prometheus', category: t('skills.monitoring'), color: 'primary' },
     { name: 'Grafana', category: t('skills.monitoring'), color: 'secondary' },
-    { name: 'Unit/Integration/E2E', category: t('skills.versionControl'), color: 'primary' },
-    { name: 'ML & Deep Learning', category: t('skills.aiml'), color: 'secondary' },
+    { name: 'Zabbix', category: t('skills.monitoring'), color: 'primary' },
+    { name: 'Unit/Integration/E2E', category: t('skills.versionControl'), color: 'secondary' },
+    { name: 'ML & Deep Learning', category: t('skills.aiml'), color: 'primary' },
   ];
 
   return (
