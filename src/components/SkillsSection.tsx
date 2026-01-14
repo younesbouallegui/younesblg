@@ -33,14 +33,15 @@ export default function SkillsSection() {
     { name: 'Jenkins', category: t('skills.cicd'), color: 'primary' },
     { name: 'Docker', category: t('skills.containerization'), color: 'secondary' },
     { name: 'Kubernetes', category: t('skills.orchestration'), color: 'primary' },
-    { name: 'n8n', category: t('skills.automation'), color: 'secondary' },
-    { name: 'Nexus', category: t('skills.cloud'), color: 'primary' },
-    { name: 'SonarQube', category: t('skills.systems'), color: 'secondary' },
-    { name: 'Prometheus', category: t('skills.monitoring'), color: 'primary' },
-    { name: 'Grafana', category: t('skills.monitoring'), color: 'secondary' },
-    { name: 'Zabbix', category: t('skills.monitoring'), color: 'primary' },
-    { name: 'Unit/Integration/E2E', category: t('skills.versionControl'), color: 'secondary' },
-    { name: 'ML & Deep Learning', category: t('skills.aiml'), color: 'primary' },
+    { name: 'Ansible', category: t('skills.automation'), color: 'secondary' },
+    { name: 'n8n', category: t('skills.automation'), color: 'primary' },
+    { name: 'Nexus', category: t('skills.cloud'), color: 'secondary' },
+    { name: 'SonarQube', category: t('skills.systems'), color: 'primary' },
+    { name: 'Prometheus', category: t('skills.monitoring'), color: 'secondary' },
+    { name: 'Grafana', category: t('skills.monitoring'), color: 'primary' },
+    { name: 'Zabbix', category: t('skills.monitoring'), color: 'secondary' },
+    { name: 'Unit/Integration/E2E', category: t('skills.versionControl'), color: 'primary' },
+    { name: 'ML & Deep Learning', category: t('skills.aiml'), color: 'secondary' },
   ];
 
   return (
