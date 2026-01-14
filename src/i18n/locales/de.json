@@ -21,7 +21,7 @@
   "about": {
     "title": "Über",
     "titleHighlight": "Mich",
-    "description": "Motivierter und detailorientierter Ingenieurstudent mit fundiertem Hintergrund in Wireless Intelligent Networks (WIN) und DevOps-Praktiken. Erfahren im Design und der Implementierung von automatisierungsorientierten CLI-Tools, CI/CD-Pipelines und Cloud-nativen Deployments. Kompetent in Java, Python und modernen Web-Technologien, mit praktischer Erfahrung in Spring Boot, Docker, Kubernetes und DevOps-Toolchains. Starkes Interesse an Automatisierung (n8n), Infrastruktur-Zuverlässigkeit und skalierbarem Systemdesign.",
+    "description": "DevOps & Automatisierungsingenieur mit fundiertem Hintergrund in Wireless Intelligent Networks (WIN) und produktionsreifen DevOps-Praktiken. Erfahren im Design und der Implementierung von automatisierungsorientierten CLI-Tools, CI/CD-Pipelines und Cloud-nativen Deployments. Kompetent in Java, Python und modernen Web-Technologien, mit praktischer Expertise in Spring Boot, Docker, Kubernetes und DevOps-Toolchains. Spezialisiert auf Automatisierung (n8n), Infrastruktur-Zuverlässigkeit und skalierbarem Systemdesign. Engagiert für innovative, produktionsreife Engineering-Lösungen.",
     "automationFirst": "Automatisierung zuerst",
     "automationFirstDesc": "Manuelle Prozesse durch intelligente n8n-Automatisierung eliminieren",
     "infrastructure": "Infrastruktur",

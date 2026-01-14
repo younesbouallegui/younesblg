@@ -74,7 +74,7 @@ export default function ContactSection() {
               </div>
             </div>
             <div className="flex gap-4">
-              <motion.a href="https://www.linkedin.com/in/younes-bouallegui" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} className="glass-card-hover w-12 h-12 flex items-center justify-center"><Linkedin className="w-5 h-5" /></motion.a>
+              <motion.a href="https://www.linkedin.com/in/younes-bouallegui-06a661248/" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} className="glass-card-hover w-12 h-12 flex items-center justify-center"><Linkedin className="w-5 h-5" /></motion.a>
               <motion.a href="https://github.com/Younesbouallegui" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} className="glass-card-hover w-12 h-12 flex items-center justify-center"><Github className="w-5 h-5" /></motion.a>
             </div>
           </motion.div>

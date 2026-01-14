@@ -22,7 +22,7 @@ export default function HeroSection() {
       
       <div className="relative z-10 container mx-auto px-6 text-center">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} className="space-y-8">
-          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1, duration: 0.6 }} className="relative w-44 h-44 md:w-56 md:h-56 mx-auto">
+          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1, duration: 0.6 }} className="relative w-44 h-44 md:w-56 md:h-56 mx-auto mt-16">
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/40 to-accent/40 blur-xl opacity-60" />
             <div className="absolute inset-0 rounded-full p-1 bg-gradient-to-br from-primary via-accent to-primary">
               <div className="w-full h-full rounded-full bg-background" />
@@ -50,12 +50,22 @@ export default function HeroSection() {
           </motion.p>
           
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.8 }} className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-            <Button variant="hero" size="lg" className="group">
+            <Button 
+              variant="hero" 
+              size="lg" 
+              className="group"
+              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               <Terminal className="w-5 h-5 me-2" />
               {t('hero.viewProjects')}
               <ArrowRight className="w-4 h-4 ms-2 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 rtl:rotate-180" />
             </Button>
-            <Button variant="heroOutline" size="lg" className="group">
+            <Button 
+              variant="heroOutline" 
+              size="lg" 
+              className="group"
+              onClick={() => document.getElementById('workflows')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               <GitBranch className="w-5 h-5 me-2" />
               {t('hero.myWorkflows')}
             </Button>

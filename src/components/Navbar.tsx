@@ -17,8 +17,18 @@ export default function Navbar() {
     { label: t('nav.workflows'), href: '#workflows' },
     { label: t('nav.projects'), href: '#projects' },
     { label: t('nav.experience'), href: '#experience' },
+    { label: t('nav.certifications'), href: '#certifications' },
     { label: t('nav.contact'), href: '#contact' },
   ];
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -56,7 +66,7 @@ export default function Navbar() {
 
           <div className="hidden md:flex items-center gap-8">
             {navItems.map(item => (
-              <a key={item.href} href={item.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group">
+              <a key={item.href} href={item.href} onClick={(e) => handleNavClick(e, item.href)} className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group cursor-pointer">
                 {item.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
               </a>
@@ -98,7 +108,7 @@ export default function Navbar() {
           >
             <div className="flex flex-col gap-4">
               {navItems.map(item => (
-                <a key={item.href} href={item.href} onClick={() => setIsMobileMenuOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors py-2">
+                <a key={item.href} href={item.href} onClick={(e) => handleNavClick(e, item.href)} className="text-muted-foreground hover:text-foreground transition-colors py-2 cursor-pointer">
                   {item.label}
                 </a>
               ))}
