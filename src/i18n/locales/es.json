@@ -21,7 +21,7 @@
   "about": {
     "title": "Sobre",
     "titleHighlight": "Mí",
-    "description": "Ingeniero DevOps y Automatización con una sólida base en Redes Inteligentes Inalámbricas (WIN) y prácticas DevOps de nivel producción. Experimentado en diseño e implementación de herramientas CLI orientadas a automatización, pipelines CI/CD y despliegues cloud-nativos. Competente en Java, Python y tecnologías web modernas, con experiencia práctica en Spring Boot, Docker, Kubernetes y cadenas de herramientas DevOps. Especializado en automatización (n8n), fiabilidad de infraestructura y diseño de sistemas escalables. Comprometido a entregar soluciones de ingeniería innovadoras de nivel producción.",
+    "description": "Ingeniero DevOps y Automatización con una sólida base en DATA (Data Analytics for Telecommunications Applications) y prácticas DevOps de nivel producción. Experimentado en diseño e implementación de herramientas CLI orientadas a automatización, pipelines CI/CD y despliegues cloud-nativos. Competente en Java, Python y tecnologías web modernas, con experiencia práctica en Spring Boot, Docker, Kubernetes y cadenas de herramientas DevOps. Especializado en automatización (n8n), fiabilidad de infraestructura y diseño de sistemas escalables. Comprometido a entregar soluciones de ingeniería innovadoras de nivel producción.",
     "automationFirst": "Automatización Primero",
     "automationFirstDesc": "Eliminando procesos manuales mediante automatización inteligente con n8n",
     "infrastructure": "Infraestructura",
