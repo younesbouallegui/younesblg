@@ -21,7 +21,7 @@
   "about": {
     "title": "À propos de",
     "titleHighlight": "Moi",
-    "description": "Étudiant ingénieur motivé et rigoureux avec une solide formation en Réseaux Intelligents Sans Fil (WIN) et pratiques DevOps. Expérimenté dans la conception et l'implémentation d'outils CLI orientés automatisation, pipelines CI/CD et déploiements cloud-natifs. Compétent en Java, Python et technologies web modernes, avec une expérience pratique en Spring Boot, Docker, Kubernetes et chaînes d'outils DevOps. Fort intérêt pour l'automatisation (n8n), la fiabilité des infrastructures et la conception de systèmes évolutifs.",
+    "description": "Ingénieur DevOps & Automatisation avec une solide formation en Réseaux Intelligents Sans Fil (WIN) et pratiques DevOps de niveau production. Expérimenté dans la conception et l'implémentation d'outils CLI orientés automatisation, pipelines CI/CD et déploiements cloud-natifs. Compétent en Java, Python et technologies web modernes, avec une expertise pratique en Spring Boot, Docker, Kubernetes et chaînes d'outils DevOps. Spécialisé dans l'automatisation (n8n), la fiabilité des infrastructures et la conception de systèmes évolutifs. Engagé à livrer des solutions d'ingénierie innovantes de niveau production.",
     "automationFirst": "Automatisation d'abord",
     "automationFirstDesc": "Éliminer les processus manuels grâce à l'automatisation intelligente avec n8n",
     "infrastructure": "Infrastructure",

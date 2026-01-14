@@ -1,7 +1,9 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Award } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import nvidiaLogo from '@/assets/nvidia-logo.png';
+import huaweiLogo from '@/assets/huawei-logo.png';
+import hederaLogo from '@/assets/hedera-logo.png';
 
 export default function CertificationsSection() {
   const { t } = useTranslation();
@@ -9,12 +11,12 @@ export default function CertificationsSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const certifications = [
-    { name: t('certifications.nvidiaDeepLearning'), org: t('certifications.nvidiaDeepLearningOrg'), date: t('certifications.nvidiaDeepLearningDate'), logo: 'NVIDIA', color: 'from-green-500 to-green-600' },
-    { name: t('certifications.nvidiaAnomaly'), org: t('certifications.nvidiaAnomalyOrg'), date: t('certifications.nvidiaAnomalyDate'), logo: 'NVIDIA', color: 'from-green-500 to-green-600' },
-    { name: t('certifications.nvidiaCybersecurity'), org: t('certifications.nvidiaCybersecurityOrg'), date: t('certifications.nvidiaCybersecurityDate'), logo: 'NVIDIA', color: 'from-green-500 to-green-600' },
-    { name: t('certifications.hedera'), org: t('certifications.hederaOrg'), date: t('certifications.hederaDate'), logo: 'Hedera', color: 'from-purple-500 to-purple-600' },
-    { name: t('certifications.huaweiDatacom'), org: t('certifications.huaweiDatacomOrg'), date: t('certifications.huaweiDatacomDate'), logo: 'Huawei', color: 'from-red-500 to-red-600' },
-    { name: t('certifications.huawei5g'), org: t('certifications.huawei5gOrg'), date: t('certifications.huawei5gDate'), logo: 'Huawei', color: 'from-red-500 to-red-600' },
+    { name: t('certifications.nvidiaDeepLearning'), org: t('certifications.nvidiaDeepLearningOrg'), date: t('certifications.nvidiaDeepLearningDate'), logo: nvidiaLogo },
+    { name: t('certifications.nvidiaAnomaly'), org: t('certifications.nvidiaAnomalyOrg'), date: t('certifications.nvidiaAnomalyDate'), logo: nvidiaLogo },
+    { name: t('certifications.nvidiaCybersecurity'), org: t('certifications.nvidiaCybersecurityOrg'), date: t('certifications.nvidiaCybersecurityDate'), logo: nvidiaLogo },
+    { name: t('certifications.hedera'), org: t('certifications.hederaOrg'), date: t('certifications.hederaDate'), logo: hederaLogo },
+    { name: t('certifications.huaweiDatacom'), org: t('certifications.huaweiDatacomOrg'), date: t('certifications.huaweiDatacomDate'), logo: huaweiLogo },
+    { name: t('certifications.huawei5g'), org: t('certifications.huawei5gOrg'), date: t('certifications.huawei5gDate'), logo: huaweiLogo },
   ];
 
   return (
@@ -27,8 +29,8 @@ export default function CertificationsSection() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {certifications.map((cert, index) => (
             <motion.div key={cert.name} initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: index * 0.1 }} className="glass-card-hover p-6 group">
-              <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${cert.color} flex items-center justify-center mb-4`}>
-                <Award className="w-6 h-6 text-white" />
+              <div className="w-14 h-14 rounded-lg bg-background/80 dark:bg-muted/50 flex items-center justify-center mb-4 p-2">
+                <img src={cert.logo} alt={cert.org} className="w-full h-full object-contain" />
               </div>
               <span className="text-xs uppercase tracking-wider text-primary font-medium">{cert.org}</span>
               <h3 className="font-display text-lg font-semibold mt-1 mb-2 group-hover:text-primary transition-colors">{cert.name}</h3>
