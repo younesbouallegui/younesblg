@@ -82,7 +82,7 @@ export default function Navbar() {
               className="text-muted-foreground hover:text-primary transition-colors mr-2"
               aria-label="n8n"
             >
-              <img src={n8nIcon} alt="n8n" className="w-5 h-5" />
+              <img src={n8nIcon} alt="n8n" className="w-7 h-7" />
             </a>
             <LanguageSelector />
             <motion.button
@@ -129,7 +129,7 @@ export default function Navbar() {
                 className="text-muted-foreground hover:text-primary transition-colors mt-2"
                 aria-label="n8n"
               >
-                <img src={n8nIcon} alt="n8n" className="w-5 h-5" />
+                <img src={n8nIcon} alt="n8n" className="w-7 h-7" />
               </a>
               <div className="flex items-center gap-4 mt-2">
                 <LanguageSelector />
