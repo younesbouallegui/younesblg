@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, X, Sun, Moon, Linkedin, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
+import n8nIcon from '@/assets/n8n-icon.png';
 
 export default function Navbar() {
   const { t } = useTranslation();
@@ -21,7 +22,7 @@ export default function Navbar() {
     { label: t('nav.contact'), href: '#contact' },
   ];
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>, href: string) => {
     e.preventDefault();
     const element = document.querySelector(href);
     if (element) {
@@ -74,6 +75,35 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
+            <div className="flex items-center gap-2 mr-2">
+              <a
+                href="https://www.linkedin.com/in/younes-bouallegui/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="w-5 h-5" />
+              </a>
+              <a
+                href="https://github.com/younesblg"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+                aria-label="GitHub"
+              >
+                <Github className="w-5 h-5" />
+              </a>
+              <a
+                href="https://n8n.younesblg.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+                aria-label="n8n"
+              >
+                <img src={n8nIcon} alt="n8n" className="w-5 h-5" />
+              </a>
+            </div>
             <LanguageSelector />
             <motion.button
               onClick={toggleTheme}
@@ -89,7 +119,7 @@ export default function Navbar() {
                 {isDark ? <Moon className="w-3.5 h-3.5 text-primary" /> : <Sun className="w-3.5 h-3.5 text-primary" />}
               </motion.div>
             </motion.button>
-            <Button variant="hero" size="sm">
+            <Button variant="hero" size="sm" onClick={(e) => handleNavClick(e, '#contact')}>
               {t('nav.letsTalk')}
             </Button>
           </div>
@@ -112,6 +142,35 @@ export default function Navbar() {
                   {item.label}
                 </a>
               ))}
+              <div className="flex items-center gap-3 mt-2">
+                <a
+                  href="https://www.linkedin.com/in/younes-bouallegui/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin className="w-5 h-5" />
+                </a>
+                <a
+                  href="https://github.com/younesblg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                  aria-label="GitHub"
+                >
+                  <Github className="w-5 h-5" />
+                </a>
+                <a
+                  href="https://n8n.younesblg.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                  aria-label="n8n"
+                >
+                  <img src={n8nIcon} alt="n8n" className="w-5 h-5" />
+                </a>
+              </div>
               <div className="flex items-center gap-4 mt-2">
                 <LanguageSelector />
                 <button
@@ -126,7 +185,7 @@ export default function Navbar() {
                     {isDark ? <Moon className="w-3.5 h-3.5 text-primary" /> : <Sun className="w-3.5 h-3.5 text-primary" />}
                   </div>
                 </button>
-                <Button variant="hero" size="sm" className="flex-1">
+                <Button variant="hero" size="sm" className="flex-1" onClick={(e) => handleNavClick(e, '#contact')}>
                   {t('nav.letsTalk')}
                 </Button>
               </div>
